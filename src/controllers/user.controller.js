@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/user.model.js');
 const asyncWrapper = require('../middleware/async');
 const { createCustomError } = require('../errors/custom-error');
 

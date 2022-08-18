@@ -7,7 +7,7 @@ const {
   getEvent,
   updateEvent,
   deleteEvent,
-} = require('../controllers/event');
+} = require('../controllers/event.controller.js');
 
 router.route('/').get(getAllEvents).post(createEvent);
 router.route('/:id').get(getEvent).patch(updateEvent).delete(deleteEvent);
