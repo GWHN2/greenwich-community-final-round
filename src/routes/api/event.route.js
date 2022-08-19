@@ -8,12 +8,15 @@ const {
   updateEvent,
   deleteEvent,
 } = require('../../controllers/event.controller.js');
-const verifyToken = require('../../middlewares/auth.middleware.js');
+const {
+  verifyToken,
+  verifyAdmin,
+} = require('../../middlewares/auth.middleware.js');
 
 eventRouter.get('/', verifyToken, getAllEvents);
-eventRouter.post('/', verifyToken, createEvent);
+eventRouter.post('/', verifyToken, verifyAdmin, createEvent);
 eventRouter.get('/:id', verifyToken, getEvent);
-eventRouter.patch('/:id', verifyToken, updateEvent);
-eventRouter.delete('/:id', verifyToken, deleteEvent);
+eventRouter.patch('/:id', verifyToken, verifyAdmin, updateEvent);
+eventRouter.delete('/:id', verifyToken, verifyAdmin, deleteEvent);
 
 module.exports = eventRouter;

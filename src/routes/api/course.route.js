@@ -8,12 +8,15 @@ const {
   updateCourse,
   deleteCourse,
 } = require('../../controllers/course.controller.js');
-const verifyToken = require('../../middlewares/auth.middleware.js');
+const {
+  verifyToken,
+  verifyAdmin,
+} = require('../../middlewares/auth.middleware.js');
 
 courseRouter.get('/', verifyToken, getAllCourses);
-courseRouter.post('/', verifyToken, createCourse);
+courseRouter.post('/', verifyToken, verifyAdmin, createCourse);
 courseRouter.get('/:id', verifyToken, getCourse);
-courseRouter.patch('/:id', verifyToken, updateCourse);
-courseRouter.delete('/:id', verifyToken, deleteCourse);
+courseRouter.patch('/:id', verifyToken, verifyAdmin, updateCourse);
+courseRouter.delete('/:id', verifyToken, verifyAdmin, deleteCourse);
 
 module.exports = courseRouter;

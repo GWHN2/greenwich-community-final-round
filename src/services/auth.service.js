@@ -10,4 +10,4 @@ const extractJwtFromRequest = (req) => {
   return jwt;
 };
 
-module.export = { extractJwtFromRequest };
+module.exports = { extractJwtFromRequest };

@@ -1,13 +1,5 @@
 require('dotenv').config();
 
-const mongooseConfig = {
-  url: process.env.MONGO_URI,
-  options: {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  },
-};
-
 const config = {
   jwt: {
     secret: process.env.JWT_SECRET,
@@ -15,4 +7,4 @@ const config = {
   },
 };
 
-module.exports = { config, mongooseConfig };
+module.exports = config;

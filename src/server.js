@@ -7,6 +7,7 @@ const errorHandler = require('./middlewares/error_handler.middleware.js');
 const dbService = require('./services/db.service');
 const { mainRouter } = require('./routes/index');
 const bodyParser = require('body-parser');
+const { createRolesIfNotExist } = require('./services/role.service');
 
 const port = process.env.PORT || 3000;
 
@@ -18,18 +19,20 @@ dbService
   .connect()
   .then(() => {
     console.log('connected to the database');
+    init();
   })
   .catch((err) => {
     console.log('error connecting to the database', err);
   });
 
-app.get('/hello', (req, res) => {
-  res.send('Hello World!');
-});
-app.use(mainRouter);
-app.use(notFound);
-app.use(errorHandler);
+const init = async () => {
+  await createRolesIfNotExist();
 
-app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
-});
+  app.use(mainRouter);
+  app.use(notFound);
+  app.use(errorHandler);
+
+  app.listen(port, () => {
+    console.log(`Server started on port ${port}`);
+  });
+};

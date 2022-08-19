@@ -8,12 +8,15 @@ const {
   updateUser,
   deleteUser,
 } = require('../../controllers/user.controller.js');
-const verifyToken = require('../../middlewares/auth.middleware.js');
+const {
+  verifyToken,
+  verifyAdmin,
+} = require('../../middlewares/auth.middleware.js');
 
 userRouter.get('/', verifyToken, getAllUsers);
-userRouter.post('/', verifyToken, createUser);
+userRouter.post('/', verifyToken, verifyAdmin, createUser);
 userRouter.get('/:id', verifyToken, getUser);
-userRouter.patch('/:id', verifyToken, updateUser);
-userRouter.delete('/:id', verifyToken, deleteUser);
+userRouter.patch('/:id', verifyToken, verifyAdmin, updateUser);
+userRouter.delete('/:id', verifyToken, verifyAdmin, deleteUser);
 
 module.exports = userRouter;

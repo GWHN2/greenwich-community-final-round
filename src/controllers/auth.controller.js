@@ -3,12 +3,13 @@ const asyncWrapper = require('../middlewares/async');
 const UserModel = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const roleModel = require('../models/role.model');
 
 const signup = asyncWrapper(async (req, res) => {
-  const { username, password, name, role } = req.body;
+  const { username, password, name, roles } = req.body;
 
   // validate
-  if (!(username && password && name && role)) {
+  if (!(username && password && name)) {
     return res.status(400).json({
       status: 400,
       msg: 'All fields are required',
@@ -18,21 +19,29 @@ const signup = asyncWrapper(async (req, res) => {
   try {
     // check if user already exists
     const user = await UserModel.findOne({ username });
-    console.log('user', user);
     if (user) {
       return res.status(400).json({ status: 400, msg: 'User already exists' });
     }
 
     // encrypt password
     const encryptedPassword = await bcrypt.hash(password, 10);
+    // add roles
+    roles = roles.map((role) => role.toUpperCase());
+
+    if (roles) {
+      const matchedRoles = await roleModel.find({ code: { $in: roles } });
+      roles = matchedRoles.map((role) => role._id);
+    } else {
+      const matchRole = await roleModel.findOne({ code: 'student' });
+      roles = [matchRole._id];
+    }
     // create new user
     const newUser = await UserModel.create({
-      name,
       username: username,
       password: encryptedPassword,
-      role,
+      name,
+      roles,
     });
-    console.log('newUser', newUser);
 
     // create token
     const token = jwt.sign({ _id: newUser._id, username }, config.jwt.secret, {
@@ -40,7 +49,6 @@ const signup = asyncWrapper(async (req, res) => {
     });
 
     user.access_token = token;
-    console.log('user', user);
 
     res.status(200).json({
       status: 200,
@@ -65,13 +73,13 @@ const login = asyncWrapper(async (req, res) => {
 
   try {
     // check if user already exists
-    const user = await UserModel.findOne({ username });
+    const user = await UserModel.findOne({ username }).populate('roles');
     if (!user) {
       return res.status(400).json({ status: 400, msg: 'User already exists' });
     }
 
     // check if password is correct
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
     if (!isPasswordValid) {
       return res.status(400).json({
         status: 400,
@@ -85,6 +93,7 @@ const login = asyncWrapper(async (req, res) => {
     });
 
     user.access_token = token;
+    user.roles = user.roles.map((role) => role.name);
 
     res.status(200).json({
       status: 200,
