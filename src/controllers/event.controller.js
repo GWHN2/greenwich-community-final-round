@@ -1,6 +1,6 @@
 const Event = require('../models/event.model.js');
-const asyncWrapper = require('../middleware/async');
-const { createCustomError } = require('../errors/custom-error');
+const asyncWrapper = require('../middlewares/async');
+const { createCustomError } = require('../utils/custom-error');
 
 const getAllEvents = asyncWrapper(async (req, res) => {
   const events = await Event.find({});

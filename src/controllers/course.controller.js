@@ -1,6 +1,6 @@
 const Course = require('../models/course.model.js');
-const asyncWrapper = require('../middleware/async');
-const { createCustomError } = require('../errors/custom-error');
+const asyncWrapper = require('../middlewares/async');
+const { createCustomError } = require('../utils/custom-error');
 
 const getAllCourses = asyncWrapper(async (req, res) => {
   const courses = await Course.find({});

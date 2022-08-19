@@ -1,6 +1,6 @@
 const User = require('../models/user.model.js');
-const asyncWrapper = require('../middleware/async');
-const { createCustomError } = require('../errors/custom-error');
+const asyncWrapper = require('../middlewares/async');
+const { createCustomError } = require('../utils/custom-error');
 
 const getAllUsers = asyncWrapper(async (req, res) => {
   const users = await User.find({});
