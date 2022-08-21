@@ -1,9 +1,13 @@
+const roleModel = require('../models/role.model');
+
 const createRolesIfNotExist = async (roles) => {
   try {
     const existingRoles = await roleModel.find({
-      code: { $in: roles },
+      code: { $in: roles.map((role) => role.toUpperCase()) },
     });
-    if (existingRoles.length === roles.length) {
+
+    console.log(existingRoles);
+    if (existingRoles.length >= roles.length) {
       return existingRoles;
     }
     const newRoles = await roleModel.insertMany(

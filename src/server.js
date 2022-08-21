@@ -26,7 +26,7 @@ dbService
   });
 
 const init = async () => {
-  await createRolesIfNotExist();
+  await createRolesIfNotExist(['Admin', 'Student', 'Employer']);
 
   app.use(mainRouter);
   app.use(notFound);
