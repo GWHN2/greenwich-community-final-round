@@ -7,11 +7,11 @@ const {
   getEvent,
   updateEvent,
   deleteEvent,
-} = require('../../controllers/event.controller.js');
+} = require('../../controllers/event.controller');
 const {
   verifyToken,
   verifyAdmin,
-} = require('../../middlewares/auth.middleware.js');
+} = require('../../middlewares/auth.middleware');
 
 eventRouter.get('/', verifyToken, getAllEvents);
 eventRouter.post('/', verifyToken, verifyAdmin, createEvent);

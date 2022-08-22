@@ -6,7 +6,7 @@ const {
   login,
   logout,
   requireSignin,
-} = require('../../controllers/auth.controller.js');
+} = require('../../controllers/auth.controller');
 
 authRouter.route('/signup').post(signup);
 authRouter.route('/login').post(login);

@@ -1,4 +1,4 @@
-const { configs } = require('../configs');
+const configs = require('../configs');
 const asyncWrapper = require('../middlewares/async');
 const UserModel = require('../models/user.model');
 const bcrypt = require('bcrypt');
@@ -84,7 +84,7 @@ const login = asyncWrapper(async (req, res) => {
     // check if user already exists
     const user = await UserModel.findOne({ username }).populate('roles');
     if (!user) {
-      return res.status(400).json({ status: 400, msg: 'User already exists' });
+      return res.status(400).json({ status: 400, msg: 'Invalid username' });
     }
 
     // check if password is correct
@@ -114,7 +114,10 @@ const login = asyncWrapper(async (req, res) => {
   }
 });
 
-const logout = asyncWrapper(async (req, res) => {});
+const logout = asyncWrapper(async (req, res) => {
+  // remove token from jwt
+  
+});
 
 const requireSignin = asyncWrapper(async (req, res) => {});
 

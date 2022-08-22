@@ -1,4 +1,4 @@
-const Course = require('../models/course.model.js');
+const Course = require('../models/course.model');
 const asyncWrapper = require('../middlewares/async');
 const { createCustomError } = require('../utils/custom-error');
 

@@ -1,3 +1,7 @@
-const ROLES = ['ADMIN', 'STUDENT', 'COMPANY'];
+const ROLES = {
+  admin: 'ADMIN',
+  student: 'STUDENT',
+  employer: 'EMPLOYER',
+};
 
-module.exports = { ROLES };
+module.exports = ROLES ;

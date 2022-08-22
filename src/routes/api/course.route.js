@@ -7,11 +7,11 @@ const {
   getCourse,
   updateCourse,
   deleteCourse,
-} = require('../../controllers/course.controller.js');
+} = require('../../controllers/course.controller');
 const {
   verifyToken,
   verifyAdmin,
-} = require('../../middlewares/auth.middleware.js');
+} = require('../../middlewares/auth.middleware');
 
 courseRouter.get('/', verifyToken, getAllCourses);
 courseRouter.post('/', verifyToken, verifyAdmin, createCourse);

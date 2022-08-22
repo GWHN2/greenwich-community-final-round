@@ -1,6 +1,6 @@
 require('dotenv').config();
-const { mongooseConfig } = require('./mongoose.config.js');
-const { ROLES } = require('./role.config.js');
+const mongooseConfig = require('./mongoose.config');
+const ROLES = require('./role.config');
 
 const configs = {
   jwt: {
@@ -8,6 +8,7 @@ const configs = {
     expiresIn: process.env.JWT_EXPIRES_IN,
   },
   mongoose: mongooseConfig,
-  role: ROLES,
+  roles: ROLES,
 };
-module.exports = { configs };
+
+module.exports = configs;

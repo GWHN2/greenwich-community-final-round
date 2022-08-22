@@ -8,4 +8,4 @@ const mongooseConfig = {
   },
 };
 
-module.exports = { mongooseConfig };
+module.exports = mongooseConfig;

@@ -7,11 +7,11 @@ const {
   getUser,
   updateUser,
   deleteUser,
-} = require('../../controllers/user.controller.js');
+} = require('../../controllers/user.controller');
 const {
   verifyToken,
   verifyAdmin,
-} = require('../../middlewares/auth.middleware.js');
+} = require('../../middlewares/auth.middleware');
 
 userRouter.get('/', verifyToken, getAllUsers);
 userRouter.post('/', verifyToken, verifyAdmin, createUser);

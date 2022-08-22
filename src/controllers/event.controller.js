@@ -1,4 +1,4 @@
-const Event = require('../models/event.model.js');
+const Event = require('../models/event.model');
 const asyncWrapper = require('../middlewares/async');
 const { createCustomError } = require('../utils/custom-error');
 

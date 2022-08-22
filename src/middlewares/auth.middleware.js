@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
-const { configs } = require('../configs');
+const configs = require('../configs');
 const roleModel = require('../models/role.model');
 const userModel = require('../models/user.model');
-const { extractJwtFromRequest } = require('../services/auth.service.js');
+const { extractJwtFromRequest } = require('../services/auth.service');
 
 const verifyToken = (req, res, next) => {
   const token = extractJwtFromRequest(req);
@@ -15,9 +15,12 @@ const verifyToken = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, config.jwt.secret);
+    const decoded = jwt.verify(token, configs.jwt.secret);
+    console.log(decoded);
     req.user = decoded;
   } catch (err) {
+    console.log(err);
+
     return res.status(401).send({
       code: 401,
       msg: 'Invalid Token',
@@ -39,7 +42,7 @@ const verifyAdmin = async (req, res, next) => {
       _id: { $in: user.roles },
     });
 
-    if (!roles.some((role) => role.code === 'admin')) {
+    if (!roles.some((role) => role.code === configs.roles.admin)) {
       return res.status(403).send({
         status: 403,
         msg: 'You are not authorized to perform this action',
@@ -55,7 +58,7 @@ const verifyAdmin = async (req, res, next) => {
   }
 };
 
-const verifyCompany = async (req, res, next) => {
+const verifyEmployer = async (req, res, next) => {
   try {
     const user = await userModel.findById(req.user._id);
     if (!user) {
@@ -68,7 +71,7 @@ const verifyCompany = async (req, res, next) => {
       _id: { $in: user.roles },
     });
 
-    if (!roles.some((role) => role.code === 'company')) {
+    if (!roles.some((role) => role.code === configs.roles.employer)) {
       return res.status(403).send({
         status: 403,
         msg: 'You are not authorized to perform this action',
@@ -84,4 +87,4 @@ const verifyCompany = async (req, res, next) => {
   }
 };
 
-module.exports = { verifyToken, verifyAdmin, verifyCompany };
+module.exports = { verifyToken, verifyAdmin, verifyEmployer };

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { configs } = require('../configs');
+const configs = require('../configs');
 
 const connect = () => {
   if (!mongoose.connections[0].readyState) {
