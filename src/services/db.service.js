@@ -1,10 +1,10 @@
-const mongooseConfig = require('../configs/mongoose.config');
 const mongoose = require('mongoose');
+const { configs } = require('../configs');
 
 const connect = () => {
   if (!mongoose.connections[0].readyState) {
     console.log('Starting new Mongo DB connection...');
-    return mongoose.connect(mongooseConfig.url, mongooseConfig.options);
+    return mongoose.connect(configs.mongoose.url, configs.mongoose.options);
   }
 };
 

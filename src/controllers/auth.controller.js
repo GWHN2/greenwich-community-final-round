@@ -1,12 +1,14 @@
-const { config } = require('../configs');
+const { configs } = require('../configs');
 const asyncWrapper = require('../middlewares/async');
 const UserModel = require('../models/user.model');
 const bcrypt = require('bcrypt');
+// import jwt
 const jwt = require('jsonwebtoken');
 const roleModel = require('../models/role.model');
+const { formatRoles, getCodes, getNames } = require('../services/role.service');
 
 const signup = asyncWrapper(async (req, res) => {
-  const { username, password, name, roles } = req.body;
+  let { username, password, name, roles } = req.body;
 
   // validate
   if (!(username && password && name)) {
@@ -15,6 +17,9 @@ const signup = asyncWrapper(async (req, res) => {
       msg: 'All fields are required',
     });
   }
+
+  roles = !roles || roles === '' ? ['Student'] : roles;
+  roles = !Array.isArray(roles) ? [roles] : roles;
 
   try {
     // check if user already exists
@@ -26,13 +31,15 @@ const signup = asyncWrapper(async (req, res) => {
     // encrypt password
     const encryptedPassword = await bcrypt.hash(password, 10);
     // add roles
-    roles = roles.map((role) => role.toUpperCase());
+    roles = formatRoles(roles);
 
     if (roles) {
-      const matchedRoles = await roleModel.find({ code: { $in: roles } });
+      const matchedRoles = await roleModel.find({
+        code: { $in: getCodes(roles) },
+      });
       roles = matchedRoles.map((role) => role._id);
     } else {
-      const matchRole = await roleModel.findOne({ code: 'student' });
+      const matchRole = await roleModel.findOne({ code: 'STUDENT' });
       roles = [matchRole._id];
     }
     // create new user
@@ -44,15 +51,17 @@ const signup = asyncWrapper(async (req, res) => {
     });
 
     // create token
-    const token = jwt.sign({ _id: newUser._id, username }, config.jwt.secret, {
-      expiresIn: config.jwt.expiresIn,
+    const token = jwt.sign({ _id: newUser._id }, configs.jwt.secret, {
+      expiresIn: configs.jwt.expiresIn,
     });
 
-    user.access_token = token;
+    newUser.access_token = token;
+
+    await newUser.save();
 
     res.status(200).json({
       status: 200,
-      data: user,
+      data: newUser,
     });
   } catch (err) {
     console.log('err', err);
@@ -88,12 +97,12 @@ const login = asyncWrapper(async (req, res) => {
     }
 
     // create token
-    const token = jwt.sign({ _id: user._id, username }, config.jwt.secret, {
-      expiresIn: config.jwt.expiresIn,
+    const token = jwt.sign({ _id: user._id, username }, configs.jwt.secret, {
+      expiresIn: configs.jwt.expiresIn,
     });
 
     user.access_token = token;
-    user.roles = user.roles.map((role) => role.name);
+    user.roles = getNames(user.roles);
 
     res.status(200).json({
       status: 200,

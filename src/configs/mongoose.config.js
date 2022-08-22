@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const mongooseConfig = {
   url: process.env.MONGO_URI,
   options: {
@@ -6,4 +8,4 @@ const mongooseConfig = {
   },
 };
 
-module.exports = mongooseConfig;
+module.exports = { mongooseConfig };

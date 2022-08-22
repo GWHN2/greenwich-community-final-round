@@ -1,3 +1,3 @@
 const ROLES = ['ADMIN', 'STUDENT', 'COMPANY'];
 
-module.exports = ROLES;
+module.exports = { ROLES };

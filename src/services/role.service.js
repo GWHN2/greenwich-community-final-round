@@ -6,16 +6,10 @@ const createRolesIfNotExist = async (roles) => {
       code: { $in: roles.map((role) => role.toUpperCase()) },
     });
 
-    console.log(existingRoles);
     if (existingRoles.length >= roles.length) {
       return existingRoles;
     }
-    const newRoles = await roleModel.insertMany(
-      roles.map((role) => ({
-        name: role,
-        code: role.toUpperCase(),
-      }))
-    );
+    const newRoles = await roleModel.insertMany(formatRoles(roles));
     return newRoles;
   } catch (err) {
     console.log('err', err);
@@ -23,4 +17,29 @@ const createRolesIfNotExist = async (roles) => {
   }
 };
 
-module.exports = { createRolesIfNotExist };
+const formatRoles = (roles) => {
+  return roles.map((role) => {
+    return {
+      name: role.charAt(0).toUpperCase() + role.slice(1).toLowerCase(),
+      code: role.toUpperCase(),
+    };
+  });
+};
+
+const getCodes = (roles) => {
+  return roles.map((role) => role.code.toUpperCase());
+};
+
+const getNames = (roles) => {
+  return roles.map(
+    (role) =>
+      role.name.charAt(0).toUpperCase() + role.name.slice(1).toLowerCase()
+  );
+};
+
+module.exports = {
+  createRolesIfNotExist,
+  formatRoles,
+  getCodes,
+  getNames,
+};
