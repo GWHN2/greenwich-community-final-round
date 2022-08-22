@@ -37,9 +37,20 @@ const getNames = (roles) => {
   );
 };
 
+const getRoleID = async (code) => {
+  try {
+    const role = await roleModel.findOne({ code: code.toUpperCase() });
+    return role._id;
+  } catch (err) {
+    console.log('err', err);
+    return res.status(500).json({ status: 500, msg: 'Can not find role' });
+  }
+};
+
 module.exports = {
   createRolesIfNotExist,
   formatRoles,
   getCodes,
   getNames,
+  getRoleID,
 };

@@ -1,6 +1,7 @@
 const User = require('../models/user.model');
 const asyncWrapper = require('../middlewares/async');
 const { createCustomError } = require('../utils/custom-error');
+const bcrypt = require('bcrypt');
 
 const getAllUsers = asyncWrapper(async (req, res) => {
   const users = await User.find({});
@@ -10,8 +11,15 @@ const getAllUsers = asyncWrapper(async (req, res) => {
 });
 
 const createUser = asyncWrapper(async (req, res) => {
+  // TODO: add default role for new user
+  const { password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  req.body.password = hashedPassword;
   const user = await User.create(req.body);
-  res.status(201).json({ user });
+  res.status(201).json({
+    status: 200,
+    data: user,
+  });
 });
 
 const getUser = asyncWrapper(async (req, res) => {

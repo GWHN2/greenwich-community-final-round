@@ -5,7 +5,12 @@ const bcrypt = require('bcrypt');
 // import jwt
 const jwt = require('jsonwebtoken');
 const roleModel = require('../models/role.model');
-const { formatRoles, getCodes, getNames } = require('../services/role.service');
+const {
+  formatRoles,
+  getCodes,
+  getNames,
+  getRoleID,
+} = require('../services/role.service');
 
 const signup = asyncWrapper(async (req, res) => {
   let { username, password, name, roles } = req.body;
@@ -37,11 +42,15 @@ const signup = asyncWrapper(async (req, res) => {
       const matchedRoles = await roleModel.find({
         code: { $in: getCodes(roles) },
       });
-      roles = matchedRoles.map((role) => role._id);
+
+      roles = matchedRoles.length
+        ? matchedRoles.map((role) => role._id)
+        : await getRoleID(configs.roles.student);
     } else {
-      const matchRole = await roleModel.findOne({ code: 'STUDENT' });
+      const matchRole = await getRoleID(configs.roles.student);
       roles = [matchRole._id];
     }
+
     // create new user
     const newUser = await UserModel.create({
       username: username,
@@ -116,7 +125,6 @@ const login = asyncWrapper(async (req, res) => {
 
 const logout = asyncWrapper(async (req, res) => {
   // remove token from jwt
-  
 });
 
 const requireSignin = asyncWrapper(async (req, res) => {});
