@@ -1,5 +1,5 @@
 const adModel = require('../models/ad.model');
-const asyncWrapper = require('../middlewares/async');
+const { asyncWrapper } = require('../utils/');
 
 const getAllAds = asyncWrapper(async (req, res) => {
   const ads = await adModel.find({});

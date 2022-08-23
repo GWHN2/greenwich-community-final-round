@@ -1,8 +1,7 @@
 const configs = require('../configs');
-const asyncWrapper = require('../middlewares/async');
+const { asyncWrapper } = require('../utils');
 const UserModel = require('../models/user.model');
 const bcrypt = require('bcrypt');
-// import jwt
 const jwt = require('jsonwebtoken');
 const roleModel = require('../models/role.model');
 const {
@@ -13,6 +12,7 @@ const {
 } = require('../services/role.service');
 
 const signup = asyncWrapper(async (req, res) => {
+  // TODO: set default roles to STUDENT, ADMIN role will only able to be set by admin
   let { username, password, name, roles } = req.body;
 
   // validate

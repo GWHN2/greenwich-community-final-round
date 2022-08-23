@@ -1,5 +1,5 @@
 const itemModel = require('../models/item.model');
-const asyncWrapper = require('../middlewares/async');
+const { asyncWrapper } = require('../utils');
 
 const getAllItems = asyncWrapper(async (req, res) => {
   const items = await itemModel.find({});
