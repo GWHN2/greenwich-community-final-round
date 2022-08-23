@@ -72,7 +72,10 @@ const verifyEmployer = async (req, res, next) => {
       _id: { $in: user.roles },
     });
 
-    if (!roles.some((role) => role.code === configs.roles.employer)) {
+    if (
+      !roles.some((role) => role.code === configs.roles.employer) &&
+      !roles.some((role) => role.code === configs.roles.admin)
+    ) {
       return res.status(403).send({
         status: 403,
         msg: 'You are not authorized to perform this action',

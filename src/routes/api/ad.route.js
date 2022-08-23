@@ -15,7 +15,7 @@ const {
 adRoute.get('/', verifyToken, getAllAds);
 adRoute.post('/', verifyToken, verifyEmployer, createAd);
 adRoute.get('/:id', verifyToken, getAd);
-adRoute.put('/:id', verifyToken, verifyEmployer, updateAd);
+adRoute.patch('/:id', verifyToken, verifyEmployer, updateAd);
 adRoute.delete('/:id', verifyToken, verifyEmployer, deleteAd);
 
 module.exports = adRoute;

@@ -15,7 +15,7 @@ const {
 marketplaceRouter.get('/', verifyToken, getAllItems);
 marketplaceRouter.post('/', verifyToken, verifyAdmin, createItem);
 marketplaceRouter.get('/:id', verifyToken, getItem);
-marketplaceRouter.put('/:id', verifyToken, verifyAdmin, updateItem);
+marketplaceRouter.patch('/:id', verifyToken, verifyAdmin, updateItem);
 marketplaceRouter.delete('/:id', verifyToken, verifyAdmin, deleteItem);
 
 module.exports = marketplaceRouter;

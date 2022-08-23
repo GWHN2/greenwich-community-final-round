@@ -4,14 +4,15 @@ const { createCustomError } = require('../utils/custom-error');
 
 const getAllCourses = asyncWrapper(async (req, res) => {
   const courses = await courseModel.find({});
-  res
-    .status(200)
-    .json({ status: 'success', data: { courses, nbHits: courses.length } });
+  res.status(200).json({ status: 'success', data: courses });
 });
 
 const createCourse = asyncWrapper(async (req, res) => {
   const course = await courseModel.create(req.body);
-  res.status(201).json({ course });
+  res.status(200).json({
+    status: 200,
+    data: course,
+  });
 });
 
 const getCourse = asyncWrapper(async (req, res) => {
@@ -20,7 +21,10 @@ const getCourse = asyncWrapper(async (req, res) => {
   if (!course) {
     return next(createCustomError('Course not found', 404));
   }
-  res.status(200).json({ course });
+  res.status(200).json({
+    status: 200,
+    data: course,
+  });
 });
 
 const updateCourse = asyncWrapper(async (req, res) => {
@@ -36,7 +40,10 @@ const updateCourse = asyncWrapper(async (req, res) => {
   if (!course) {
     return next(createCustomError('Course not found', 404));
   }
-  res.status(200).json({ course });
+  res.status(200).json({
+    status: 200,
+    data: course,
+  });
 });
 
 const deleteCourse = asyncWrapper(async (req, res) => {
@@ -45,7 +52,10 @@ const deleteCourse = asyncWrapper(async (req, res) => {
   if (!course) {
     return next(createCustomError('Course not found', 404));
   }
-  res.status(200).json({ course });
+  res.status(200).json({
+    status: 200,
+    data: course,
+  });
 });
 
 module.exports = {

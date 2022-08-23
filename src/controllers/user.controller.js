@@ -6,9 +6,7 @@ const { formatRoles, getRoleID } = require('../services/role.service');
 
 const getAllUsers = asyncWrapper(async (req, res) => {
   const users = await userModel.find({});
-  res
-    .status(200)
-    .json({ status: 'success', data: { users, nbHits: users.length } });
+  res.status(200).json({ status: 'success', data: users });
 });
 
 const createUser = asyncWrapper(async (req, res) => {
