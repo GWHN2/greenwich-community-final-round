@@ -18,6 +18,8 @@ const createRolesIfNotExist = async (roles) => {
 };
 
 const formatRoles = (roles) => {
+  !Array.isArray(roles) && (roles = [roles]);
+
   return roles.map((role) => {
     return {
       name: role.charAt(0).toUpperCase() + role.slice(1).toLowerCase(),
