@@ -4,7 +4,7 @@ const { createCustomError } = require('../utils/custom-error');
 
 const getAllEvents = asyncWrapper(async (req, res) => {
   const events = await eventModel.find({});
-  res.status(200).json({ status: 'success', data: events });
+  res.status(200).json({ status: 200, data: events });
 });
 
 const createEvent = asyncWrapper(async (req, res) => {

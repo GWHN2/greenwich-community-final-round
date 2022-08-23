@@ -4,7 +4,7 @@ const { createCustomError } = require('../utils/custom-error');
 
 const getAllCourses = asyncWrapper(async (req, res) => {
   const courses = await courseModel.find({});
-  res.status(200).json({ status: 'success', data: courses });
+  res.status(200).json({ status: 200, data: courses });
 });
 
 const createCourse = asyncWrapper(async (req, res) => {

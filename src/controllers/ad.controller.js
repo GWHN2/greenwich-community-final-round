@@ -3,7 +3,7 @@ const { asyncWrapper } = require('../utils/');
 
 const getAllAds = asyncWrapper(async (req, res) => {
   const ads = await adModel.find({});
-  res.status(200).json({ status: 'success', data: ads });
+  res.status(200).json({ status: 200, data: ads });
 });
 
 const createAd = asyncWrapper(async (req, res) => {

@@ -3,7 +3,7 @@ const { asyncWrapper } = require('../utils');
 
 const getAllItems = asyncWrapper(async (req, res) => {
   const items = await itemModel.find({});
-  res.status(200).json({ status: 'success', data: items });
+  res.status(200).json({ status: 200, data: items });
 });
 
 const createItem = asyncWrapper(async (req, res) => {
