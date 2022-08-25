@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const notFound = require('./middlewares/not-found');
 const errorHandler = require('./middlewares/error_handler.middleware');
 const dbService = require('./services/db.service');
@@ -11,6 +12,7 @@ const { createRolesIfNotExist } = require('./services/role.service');
 
 const port = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.json());
