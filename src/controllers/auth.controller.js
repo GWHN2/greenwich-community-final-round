@@ -125,14 +125,43 @@ const login = asyncWrapper(async (req, res) => {
 });
 
 const logout = asyncWrapper(async (req, res) => {
-  // remove token from jwt
+  // log out user by removing token
+  try {
+    const user = await UserModel.findById(req.user._id);
+    user.access_token = '';
+    await user.save();
+
+    res.status(200).json({
+      status: 200,
+      msg: 'Logged out successfully',
+    });
+  } catch (err) {
+    console.log('err', err);
+    res.status(500).send({ status: 500, msg: 'Server error' });
+  }
 });
 
-const requireSignin = asyncWrapper(async (req, res) => {});
+const checkTokenExpired = asyncWrapper(async (req, res) => {
+  // check if token is expired
+  try {
+    const user = await UserModel.findById(req.user._id);
+    if (!user) {
+      return res.status(400).json({ status: 400, msg: 'Invalid token' });
+    }
+
+    res.status(200).json({
+      status: 200,
+      msg: 'Token valid',
+    });
+  } catch (err) {
+    console.log('err', err);
+    res.status(500).send({ status: 500, msg: 'Server error' });
+  }
+});
 
 module.exports = {
   signup,
   login,
   logout,
-  requireSignin,
+  checkTokenExpired,
 };
