@@ -13,13 +13,13 @@ const {
 
 const signup = asyncWrapper(async (req, res) => {
   // TODO: set default roles to STUDENT, ADMIN role will only able to be set by admin
-  let { username, password, name, roles } = req.body;
+  let { username, password, name, roles, principalID } = req.body;
 
   // validate
-  if (!(username && password && name)) {
+  if (!(username && password && name && principalID)) {
     return res.status(400).json({
       status: 400,
-      msg: 'All fields are required',
+      msg: 'Missing required fields',
     });
   }
 
@@ -57,6 +57,7 @@ const signup = asyncWrapper(async (req, res) => {
       password: encryptedPassword,
       name,
       roles,
+      principalID,
     });
 
     // create token

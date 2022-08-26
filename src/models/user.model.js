@@ -13,9 +13,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  principalId: {
+  principalID: {
     type: String,
-    required: false,
+    required: true,
   },
   roles: [
     {
