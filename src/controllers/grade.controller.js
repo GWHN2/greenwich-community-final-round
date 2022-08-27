@@ -39,16 +39,15 @@ const createGrade = asyncWrapper(async (req, res) => {
 const getGrades = asyncWrapper(async (req, res) => {
   const { studentID } = req.body;
 
-  const grades = await gradeModel.find({ studentID }).lean();
+  let grades = await gradeModel.find({ studentID }).lean();
+  grades = grades.map((grade) => {
+    grade.subjectStatus = convertSubjectStatus(grade.subjectStatus);
+    return grade;
+  });
 
   res.status(200).json({
     status: 200,
-    data: grades.map((grade) => {
-      return {
-        subjectStatus: convertSubjectStatus(grade.subjectStatus),
-        ...grade,
-      };
-    }),
+    data: grades,
   });
 });
 

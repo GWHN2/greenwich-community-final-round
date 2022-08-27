@@ -33,8 +33,8 @@ const verifyAdmin = async (req, res, next) => {
     const user = await userModel.findById(req.user._id);
 
     if (!user) {
-      return res.status(404).send({
-        status: 404,
+      return res.status(403).send({
+        status: 403,
         msg: 'You are not authorized to perform this action',
       });
     }
@@ -62,8 +62,8 @@ const verifyEmployer = async (req, res, next) => {
   try {
     const user = await userModel.findById(req.user._id);
     if (!user) {
-      return res.status(404).send({
-        status: 404,
+      return res.status(403).send({
+        status: 403,
         msg: 'You are not authorized to perform this action',
       });
     }
@@ -91,6 +91,19 @@ const verifyEmployer = async (req, res, next) => {
 };
 
 const verifySameUser = async (req, res, next) => {
+  const user = await userModel.findById(req.user._id);
+  if (!user) {
+    return res.status(403).send({
+      status: 403,
+      msg: 'You are not authorized to perform this action',
+    });
+  }
+  const roles = await roleModel.find({
+    _id: { $in: user.roles },
+  });
+
+  if (roles.some((role) => role.code === configs.roles.admin)) return next();
+
   req.user._id === req.body.studentID
     ? next()
     : res.status(403).send({
