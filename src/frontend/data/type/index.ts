@@ -50,6 +50,14 @@ export type CourseData = {
   tokens: number;
 };
 
+export type ProductData = {
+  _id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  price: number;
+};
+
 export type NFTData = {
   description: string;
   id: bigint;

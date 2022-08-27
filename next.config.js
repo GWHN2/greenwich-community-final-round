@@ -19,5 +19,8 @@ const nextConfig = {
     // Important: return the modified config
     return config;
   },
+  images: {
+    domains: ["*"],
+  }
 };
 module.exports = nextConfig;
