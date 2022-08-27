@@ -12,6 +12,11 @@ const EnvPlugin = new webpack.EnvironmentPlugin({
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  experimental: {
+    images: {
+      unoptimized: true,
+    },
+  },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     // Plugin
     config.plugins.push(EnvPlugin);
@@ -19,8 +24,5 @@ const nextConfig = {
     // Important: return the modified config
     return config;
   },
-  images: {
-    domains: ["*"],
-  }
 };
 module.exports = nextConfig;

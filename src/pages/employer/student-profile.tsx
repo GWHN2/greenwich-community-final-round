@@ -56,11 +56,7 @@ function StudentProfile() {
 
         <div className="flex flex-row space-x-4">
           {profiles.map((profile, i) => {
-            return (
-              <div key={i}>
-                <Profile {...profile} />
-              </div>
-            );
+            return <div key={i}>{/* <Profile {...profile} /> */}</div>;
           })}
         </div>
       </main>

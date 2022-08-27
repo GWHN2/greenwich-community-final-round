@@ -3,6 +3,10 @@ import {
   EllipsisHorizontalIcon,
 } from "@heroicons/react/24/outline";
 import React from "react";
+import {
+  capitalizeFirstLetter,
+  shortenAddress,
+} from "../../utils/stringsFunction";
 
 const History = () => {
   const historyList = [
@@ -91,10 +95,11 @@ const HistoryItem = ({
       </div>
       <div className="flex flex-col items-start justify-center w-3/4 font-semibold">
         <span>
-          {type.capitalize()}: <span className="gradient-text">{amount}</span>
+          {capitalizeFirstLetter(type)}:{" "}
+          <span className="gradient-text">{amount}</span>
         </span>
         <span>
-          {type === "send" ? "To" : "From"}: {address.shorten(30)}
+          {type === "send" ? "To" : "From"}: {shortenAddress(address, 30)}
         </span>
       </div>
       <span className="text-xs font-medium text-gray-400">{date}</span>

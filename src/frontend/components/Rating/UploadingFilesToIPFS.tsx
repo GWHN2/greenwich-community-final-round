@@ -51,7 +51,7 @@ const UploadingFilesToIPFS = ({
         const imageURI = await new StorageClient().storeFiles(selectedFile);
         setFileUrl(imageURI);
         if (callback) {
-          callback({ url: imageURI, name, description });
+          callback({ url: imageURI, name, description } as MintNFTProps);
         }
         toast.success("File uploaded to IPFS successfully");
         setLoading(false);

@@ -21,7 +21,11 @@ const CreateAdvertisement = () => {
         tokens
       </p>
       <div className="mt-10">
-        <UploadingFilesToIPFS callback={setImageUrl} />
+        <UploadingFilesToIPFS
+          callback={(metaData) => {
+            setImageUrl(metaData.url);
+          }}
+        />
         <p>Details:</p>
         <MdEditor
           className="w-full h-64 mt-2"
