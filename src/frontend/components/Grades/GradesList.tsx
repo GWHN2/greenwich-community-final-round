@@ -1,8 +1,13 @@
 import React from "react";
+import { toast } from "react-toastify";
+import { useRecoilValue } from "recoil";
+import { SessionDataState } from "../../data/globalState";
+import { claimOrDeposit } from "../../service/token-service";
 import Button from "../common/Button";
 import GradesSection from "./GradesSection";
 
 const GradesList = () => {
+  const sessiondata = useRecoilValue(SessionDataState);
   const grades = [
     {
       name: "1670",
@@ -47,6 +52,22 @@ const GradesList = () => {
       isCompleted: true,
     },
   ];
+
+  const handleClaim = async (code: string, token: number) => {
+    try {
+      const claimResult = await claimOrDeposit(
+        sessiondata?.principalId as string,
+        token
+      );
+      console.log(claimResult);
+      if (claimResult.Ok) {
+        toast.success("Claim Successful");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="w-full mt-10">
       <div className="grid w-full grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4">
@@ -62,10 +83,8 @@ const GradesList = () => {
               <div className="pt-4">
                 <GradesSection grade={grade.grade} className="text-2xl" />
                 <Button
-                  onClick={() => {
-                    const isConfirm = confirm(
-                      `You have ${grade.token} tokens to claim. Do you want to claim this course?`
-                    ).valueOf();
+                  onClick={async () => {
+                    await handleClaim(grade.name, grade.token);
                   }}
                 >
                   {grade.isCompleted

@@ -18,13 +18,16 @@
     "lint:fix": "next lint --fix",
     "export": "next export",
     "sync:nft": "DFX_NETWORK=local && rsync -avr .dfx/$(echo ${DFX_NETWORK:-'**'})/canisters/nft --exclude='idl/' --exclude='*.wasm' --delete src/declarations",
-    "sync:token": "DFX_NETWORK=local && rsync -avr .dfx/$(echo ${DFX_NETWORK:-'**'})/canisters/token --exclude='idl/' --exclude='*.wasm' --delete src/declarations"
+    "sync:token": "DFX_NETWORK=local && rsync -avr .dfx/$(echo ${DFX_NETWORK:-'**'})/canisters/token --exclude='idl/' --exclude='*.wasm' --delete src/declarations",
+    "sync:marketplace": "DFX_NETWORK=local && rsync -avr .dfx/$(echo ${DFX_NETWORK:-'**'})/canisters/marketplace --exclude='idl/' --exclude='*.wasm' --delete src/declarations"
   },
   "dependencies": {
     "@dfinity/agent": "^0.12.1",
     "@dfinity/candid": "^0.12.1",
     "@dfinity/principal": "^0.12.1",
     "@heroicons/react": "^2.0.1",
+    "@paypal/paypal-js": "^5.1.1",
+    "@paypal/react-paypal-js": "^7.8.1",
     "assert": "^2.0.0",
     "axios": "^0.27.2",
     "buffer": "^6.0.3",

@@ -1,16 +1,8 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import API from "../../data/api";
-import {
-  SessionDataState,
-  UserDataState,
-  UserRoleState,
-} from "../../data/globalState";
-import { ACCESS_TOKEN } from "../../data/localStorage";
-import { approve, balanceOf, transfer } from "../../service/token-service";
+import { useRecoilValue } from "recoil";
+import { SessionDataState } from "../../data/globalState";
+import { transfer } from "../../service/token-service";
 import Button from "../common/Button";
 import HookForm from "../common/HookForm";
 import Titles from "../common/Titles";
