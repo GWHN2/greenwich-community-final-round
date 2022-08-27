@@ -23,14 +23,14 @@ shared(msg) actor class DAO(staking : Principal) = Self{
     private var idToEvent: HashMap.HashMap<Nat, Types.Event> = HashMap.fromIter(eventStore.vals(), 10, Nat.equal, Hash.hash);
     stable var nextEventId : Nat = 0;
     stable var nextEventPendingId : Nat = 0;
+    private stable var eventToVotesStore:[(Nat,[(Principal,Types.Vote)])] = [];
     private stable var eventPendingStore: [(Nat, Types.EventPending)] = [];
-    private var idToEventMetadata: HashMap.HashMap<Nat, Types.eventmetadata> = HashMap.fromIter(eventMetadataStore.vals(), 10, Nat.equal, Hash.hash);
+    private var idToEventMetadata= HashMap.HashMap<Nat, HashMap.HashMap<Principal, Types.eventmetadata>>(1, Nat.equal, Hash.hash);
     private var idToEventPending: HashMap.HashMap<Nat, Types.EventPending> = HashMap.fromIter(eventPendingStore.vals(), 10, Nat.equal, Hash.hash);
     private var stakeProvider : Types.IStaking = actor(Principal.toText(staking)) : Types.IStaking;
     private var eventPendingToVotes = HashMap.HashMap<Nat, HashMap.HashMap<Principal, Types.Vote>>(1, Nat.equal, Hash.hash);
-    system func heartbeat() : async(){
-        await execute();
-    };
+  
+
     public shared(msg) func CreateEvent(event : Types.Event) : async Types.CreateEventResult {
         let id = nextEventId;
         nextEventId += 1;
@@ -45,7 +45,6 @@ shared(msg) actor class DAO(staking : Principal) = Self{
             eventPendingId = id;
             eventVote = #Up;
         };
-        idToEventMetadata.put(id,metadata_temp);
         return #Ok(true);
     };
     public shared(msg) func GetAllEventPending() : async[(EventId, Types.EventPending)]{
@@ -88,7 +87,9 @@ shared(msg) actor class DAO(staking : Principal) = Self{
                 
             };
             case null{
-                return #Err(#Other);
+                var tmp = HashMap.HashMap<Principal, Types.eventmetadata>(1, Principal.equal, Principal.hash);
+                tmp.put(caller, data);
+                idToEventMetadata.put(data.eventPendingId, tmp);
             };
             
         };
@@ -152,7 +153,26 @@ shared(msg) actor class DAO(staking : Principal) = Self{
         
 
     };
-    func execute() : async(){
+    system func heartbeat() : async(){
 		await _automaticAcceptEventPending();
     };
+    system func preupgrade() {
+		var eventVotes = Iter.toArray(eventPendingToVotes.entries());
+		var sizeVotes : Nat = eventVotes.size();
+		var tempVotes : [var (Nat, [(Principal, Types.Vote)])] = Array.init<(Nat, [(Principal, Types.Vote)])>(sizeVotes, (0,[]));
+		sizeVotes := 0;
+		for ((k, v) in eventPendingToVotes.entries()) {
+			tempVotes[sizeVotes] := (k, Iter.toArray(v.entries()));
+			sizeVotes += 1;
+		};
+		eventToVotesStore := Array.freeze(tempVotes);
+		
+	};
+	
+	system func postupgrade() {
+		eventStore := [];
+		eventPendingStore := [];
+
+	};
+
 };

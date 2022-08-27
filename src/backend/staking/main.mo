@@ -88,4 +88,30 @@ shared(msg) actor class Staking(dip20: Principal) = Self {
     public shared query func getCanisterPrincipal() : async Principal {
 		return Principal.fromActor(Self);
 	};
+    system func preupgrade() {
+		stakings := Iter.toArray(idToStakingPackage.entries());
+
+        var addressToStakeInfo = Iter.toArray(addressToStaking.entries());
+		var size : Nat = addressToStakeInfo.size();
+		var temp : [var (Principal, [(Nat, Types.StakingInfo)])] = Array.init<(Principal, [(Nat, Types.StakingInfo)])>(size, (owner,[]));
+		size := 0;
+		for ((k, v) in addressToStaking.entries()) {
+			temp[size] := (k, Iter.toArray(v.entries()));
+			size += 1;
+		};
+		stakingInfo := Array.freeze(temp);
+	};
+	
+	system func postupgrade() {
+		stakings := [];
+
+        for ((k, v) in stakingInfo.vals()) {
+			let allowed_temp = HashMap.fromIter<Nat, Types.StakingInfo>(v.vals(), 1, Nat.equal, Hash.hash);
+			addressToStaking.put(k, allowed_temp);
+		};
+        stakingInfo := [];
+	};
+    system func heartbeat():async(){
+        
+    }
 }
