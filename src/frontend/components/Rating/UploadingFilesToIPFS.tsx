@@ -40,6 +40,12 @@ const UploadingFilesToIPFS = ({
     []
   );
 
+  const resetInput = () => {
+    setName("");
+    setDescription("");
+    setSelectedFile(undefined);
+  };
+
   const onSubmit = async () => {
     if (!name) {
       toast.error("Name is required");
@@ -54,6 +60,7 @@ const UploadingFilesToIPFS = ({
           callback({ url: imageURI, name, description } as MintNFTProps);
         }
         toast.success("File uploaded to IPFS successfully");
+        resetInput();
         setLoading(false);
       } else {
         toast.error("Please select a file to upload");
