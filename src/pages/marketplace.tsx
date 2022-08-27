@@ -1,42 +1,38 @@
-import Head from 'next/head';
-import { useQuery } from 'react-query';
-import RefetchButton from '../frontend/components/common/RefetchButton';
-import { ProductList } from '../frontend/components/Marketplace';
-import MyNFT from '../frontend/components/Profile/MyNFT';
-import API from '../frontend/data/api';
-import { APP } from '../frontend/enum';
-import { getHeaders } from '../frontend/utils/getHeaders';
+import Head from "next/head";
+import { useEffect, useState } from "react";
+import Spinner from "../frontend/components/common/Spinner";
+import { ProductList } from "../frontend/components/Marketplace";
+import MyNFT from "../frontend/components/Profile/MyNFT";
+import { ProductData } from "../frontend/data/type";
+import { APP } from "../frontend/enum";
+import { getAllLists } from "../frontend/service/marketplace-service";
 
 const Marketplace = () => {
-  const {
-    isLoading,
-    data: products,
-    isError,
-    refetch,
-  } = useQuery(['marketplace'], async (): Promise<any> => {
-    const headers = getHeaders();
-    const response = await API.get(`/marketplace/`, {
-      headers,
-    });
-
-    return response.data?.data;
-  });
-
-  if (isLoading || isError) {
-    return (
-      <div className='flex'>
-        <RefetchButton refetch={refetch} loading={isLoading} />
-      </div>
-    );
-  }
+  const [products, setProducts] = useState<ProductData[]>([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const nfts = await getAllLists();
+      setProducts(
+        nfts.map((nft: any) => ({
+          ...nft[1],
+          imageUrl: nft[1].url,
+          seller: nft[1].seller.toString(),
+          listId: nft[0],
+        }))
+      );
+      setLoading(false);
+    })();
+  }, []);
 
   return (
-    <div className='h-full '>
+    <div className="h-full ">
       <Head>
         <title>{APP.APP_NAME} | Courses and Books</title>
       </Head>
-      <main className='container flex flex-col items-center justify-center mt-32'>
-        <ProductList products={products} />
+      <main className="container flex flex-col items-center justify-center mt-32">
+        {loading ? <Spinner /> : <ProductList products={products} />}
         <MyNFT isForSale />
       </main>
     </div>

@@ -35,11 +35,21 @@ export const EditingItemIdState = atom({
 });
 export const TransferringIdState = atom({
   key: "TransferringIdState",
-  default: null as bigint | null,
+  default: null as number | null,
+});
+export const ListingPriceState = atom({
+  key: "ListingPriceState",
+  default: null as number | null,
 });
 
 export const UserDataState = atom<UserData>({
   key: "UserDataState",
   default: {} as UserData,
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const ListingStatusNFTState = atom<string[]>({
+  key: "ListingStatusNFTState",
+  default: [],
   effects_UNSTABLE: [persistAtom],
 });

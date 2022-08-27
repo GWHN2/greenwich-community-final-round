@@ -1,0 +1,17 @@
+// Version: 1.0.0
+type listNft =
+  {
+    description : Text;
+    listId : Nat;
+    name : Text;
+    price : Nat;
+    seller : Principal;
+    status : Text;
+    tokenId : Nat;
+    url : Text
+  };
+actor {
+  stable var fee : Nat;
+  stable var listIdCount : Nat;
+  stable var listStore : [(Nat, listNft)]
+};

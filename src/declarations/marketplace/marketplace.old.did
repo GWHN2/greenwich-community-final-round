@@ -1,0 +1,27 @@
+type listNft = 
+ record {
+   description: text;
+   listId: nat;
+   name: text;
+   price: nat;
+   seller: principal;
+   status: text;
+   tokenId: nat;
+   url: text;
+ };
+type dip721Metadata = 
+ record {
+   description: text;
+   name: text;
+   owner: principal;
+   url: text;
+ };
+type ListId = nat;
+service : {
+  buyNFT: (principal, principal, nat, nat, ListId) -> (bool);
+  getAllLists: () -> (vec record {
+                            ListId;
+                            listNft;
+                          }) query;
+  listNft: (nat, nat, dip721Metadata) -> (bool);
+}

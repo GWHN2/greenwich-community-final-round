@@ -34,7 +34,7 @@ export const getMyNfts = async () => {
 export const transferNFT = async (
   from: string,
   to: string,
-  tokenId: bigint
+  tokenId: number
 ) => {
   const actorService = await makeNftActor();
   const fromId = Principal.fromText(from);

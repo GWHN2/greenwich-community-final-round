@@ -1,7 +1,7 @@
-import { HttpAgent } from '@dfinity/agent';
-import { Principal } from '@dfinity/principal';
+import { HttpAgent } from "@dfinity/agent";
+import { Principal } from "@dfinity/principal";
 
-export type UserRole = 'Student' | 'Admin' | 'Employer';
+export type UserRole = "Student" | "Admin" | "Employer";
 
 export type EditingItem = {
   id?: string;
@@ -55,6 +55,7 @@ export type ProductData = {
   _id: string;
   name: string;
   description: string;
+  seller: string;
   imageUrl: string;
   price: number;
   code: string;
@@ -62,7 +63,7 @@ export type ProductData = {
 
 export type NFTData = {
   description: string;
-  id: bigint;
+  id: number;
   name: string;
   owner: Principal;
   url: string;

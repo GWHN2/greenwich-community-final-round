@@ -21,14 +21,14 @@ shared(msg) actor class Marketplace(nft : Principal, token : Principal)= Self {
     private stable var listStore: [(Nat, Types.listNft)] = [];
     private var idToList: HashMap.HashMap<Nat, Types.listNft> = HashMap.fromIter(listStore.vals(), 10, Nat.equal, Hash.hash);
     private var owner = msg.caller;
-    private var uogTokenProvider: Types.IDIP20 = actor(Principal.toText(nft)) : Types.IDIP20;
-    private var nftProvider: Types.IDIP721 = actor(Principal.toText(token)) : Types.IDIP721;
+    private var uogTokenProvider: Types.IDIP20 = actor(Principal.toText(token)) : Types.IDIP20;
+    private var nftProvider: Types.IDIP721 = actor(Principal.toText(nft)) : Types.IDIP721;
     private stable var fee = 1;
     //1 function to list
     //1 function to 
     public shared(msg) func buyNFT(seller : Principal, buyer : Principal, value : Nat, tokenid : Nat, listId : ListId): async (Bool){
-        let tokenProvider: Types.IDIP20 = actor(Principal.toText(nft)) : Types.IDIP20;
-        let nftTokenProvider : Types.IDIP721 = actor(Principal.toText(token)) : Types.IDIP721;
+        let tokenProvider: Types.IDIP20 = actor(Principal.toText(token)) : Types.IDIP20;
+        let nftTokenProvider : Types.IDIP721 = actor(Principal.toText(nft)) : Types.IDIP721;
         let ownerNft = await nftProvider.ownerOf(tokenid);
         let resultNft = await nftProvider.transfer(seller, tokenid, buyer);
         let resultToken = await tokenProvider.transfer(buyer, seller, value);

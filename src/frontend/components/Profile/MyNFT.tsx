@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import {
+  ListingPriceState,
   SessionDataState,
   ShowingModalState,
   TransferringIdState,
@@ -15,6 +16,11 @@ import { getMyNfts } from "../../service/nft-service";
 import { NFTData } from "../../data/type";
 import Titles from "../common/Titles";
 import { shortenAddress } from "../../utils/stringsFunction";
+import Modal from "../common/Modal";
+import TextInput from "../common/TextInput";
+import { listNft } from "../../service/marketplace-service";
+import { toast } from "react-toastify";
+import Spinner from "../common/Spinner";
 
 export interface ProfileProps {
   image: any;
@@ -29,23 +35,51 @@ const MyNFT = ({ isForSale = false }: { isForSale?: boolean }) => {
   const [myNfts, setMyNfts] = useState<NFTData[]>([]);
   const setShowingModal = useSetRecoilState(ShowingModalState);
   const setTransferringId = useSetRecoilState(TransferringIdState);
+  const listingPrice = useRecoilValue(ListingPriceState);
+  const resetListingPrice = useResetRecoilState(ListingPriceState);
+  const [loading, setLoading] = useState(false);
+  const [loadingList, setLoadingList] = useState(false);
 
   useEffect(() => {
     (async () => {
+      setLoadingList(true);
       try {
         const nfts = await getMyNfts();
+        console.log("====================================");
+        console.log(nfts);
+        console.log("====================================");
         const filteredNfts = nfts.filter((nft: any) => {
           return (
             nft[1].owner?.toString() === (sectionData?.principalId as string)
           );
         });
 
-        setMyNfts(filteredNfts.map((nft: any) => nft[1]));
-      } catch (error) {}
+        setMyNfts(filteredNfts.map((nft: any) => ({ ...nft[1], id: nft[0] })));
+      } catch (error) {
+        console.log(error);
+      }
+      setLoadingList(false);
     })();
   }, []);
 
-  const handleSales = async (nft: NFTData) => {};
+  const handleSales = async (nft: NFTData) => {
+    setLoading(true);
+    try {
+      const listNFTresponse = await listNft(listingPrice as number, nft);
+      console.log(listNFTresponse);
+      if (listNFTresponse) {
+        toast.success("NFT listed successfully");
+        resetListingPrice();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+  };
+
+  if (loadingList) {
+    return <Spinner />;
+  }
 
   return (
     <div className="pb-10">
@@ -65,7 +99,6 @@ const MyNFT = ({ isForSale = false }: { isForSale?: boolean }) => {
                   alt={nft.name}
                 />
               </div>
-
               <span className="">Name: {nft.name}</span>
               <span className="">Description: {nft.description}</span>
               <span className="">
@@ -75,8 +108,8 @@ const MyNFT = ({ isForSale = false }: { isForSale?: boolean }) => {
               <div className="dropdown-item">
                 {isForSale ? (
                   <Button
-                    onClick={async () => {
-                      await handleSales(nft);
+                    onClick={() => {
+                      setShowingModal("ListingNFTModal");
                     }}
                   >
                     Sale
@@ -92,6 +125,22 @@ const MyNFT = ({ isForSale = false }: { isForSale?: boolean }) => {
                   </Button>
                 )}
               </div>
+              {listingPrice && (
+                <div>
+                  <Button
+                    onClick={async () => {
+                      await handleSales(nft);
+                    }}
+                    loading={loading}
+                  >
+                    List for
+                    <span className="mx-1 font-semibold gradient-text">
+                      {listingPrice}
+                    </span>
+                    token
+                  </Button>
+                </div>
+              )}
             </div>
           ))}
       </div>

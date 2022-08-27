@@ -26,17 +26,17 @@ const TransferFrom = () => {
   ];
   const [formValues, setFormValues] = useState(defaultValues);
   const [loading, setLoading] = useState(false);
-  const sessiondata = useRecoilValue(SessionDataState);
+  const sessionData = useRecoilValue(SessionDataState);
   const handleTransfer = async () => {
     setLoading(true);
     try {
-      const response = await transfer(
-        sessiondata?.principalId as string,
+      const transferResponse = await transfer(
+        sessionData?.principalId as string,
         formValues.PrincipalId,
         +formValues.amount
       );
 
-      if (response?.Ok) {
+      if (transferResponse?.Ok) {
         toast.success("Transfer Successful");
       }
     } catch (error) {
