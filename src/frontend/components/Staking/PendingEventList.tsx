@@ -1,26 +1,19 @@
-import Image from "next/image";
-import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import {
   ListingPriceState,
   SessionDataState,
   ShowingModalState,
   TransferringIdState,
-  UserDataState,
-  UserRoleState,
 } from "../../data/globalState";
-import Button from "../common/Button";
-import avatar from "../../../public/images/avatar.png";
-import { useEffect, useState } from "react";
-import { getMyNfts } from "../../service/nft-service";
 import { NFTData } from "../../data/type";
-import Titles from "../common/Titles";
-import { shortenAddress } from "../../utils/stringsFunction";
-import Modal from "../common/Modal";
-import TextInput from "../common/TextInput";
 import { listNft } from "../../service/marketplace-service";
-import { toast } from "react-toastify";
+import { getMyNfts } from "../../service/nft-service";
+import { shortenAddress } from "../../utils/stringsFunction";
+import Button from "../common/Button";
 import Spinner from "../common/Spinner";
+import Titles from "../common/Titles";
 
 export interface ProfileProps {
   image: any;
@@ -30,7 +23,7 @@ export interface ProfileProps {
   numOfToken: number;
 }
 
-const MyNFT = ({ isForSale = false }: { isForSale?: boolean }) => {
+const PendingEventList = ({ isForSale = false }: { isForSale?: boolean }) => {
   const sectionData = useRecoilValue(SessionDataState);
   const [myNfts, setMyNfts] = useState<NFTData[]>([]);
   const setShowingModal = useSetRecoilState(ShowingModalState);
@@ -80,7 +73,7 @@ const MyNFT = ({ isForSale = false }: { isForSale?: boolean }) => {
 
   return (
     <div className="pb-10">
-      <Titles title="Your NFT" className="text-center" />
+      <Titles title="Pending Event List" className="text-center" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {myNfts &&
           myNfts.length > 0 &&
@@ -89,55 +82,22 @@ const MyNFT = ({ isForSale = false }: { isForSale?: boolean }) => {
               className="flex flex-col items-center justify-around p-4 rounded-lg shadow-lg cursor-pointer dropdown-container"
               key={index}
             >
-              <div className="w-60 h-60">
-                <img
-                  className="object-contain w-full h-full"
-                  src={nft.url}
-                  alt={nft.name}
-                />
-              </div>
               <span className="">Name: {nft.name}</span>
               <span className="">Description: {nft.description}</span>
               <span className="">
                 Owner: {shortenAddress(nft.owner.toString())}
               </span>
 
-              <div className="dropdown-item">
-                {isForSale ? (
-                  <Button
-                    onClick={() => {
-                      setShowingModal("ListingNFTModal");
-                    }}
-                  >
-                    Sale
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={() => {
-                      setTransferringId(nft.id);
-                      setShowingModal("TransferNFT");
-                    }}
-                  >
-                    Transfer
-                  </Button>
-                )}
+              <div className="">
+                <Button
+                  onClick={() => {
+                    setTransferringId(nft.id);
+                    setShowingModal("TransferNFT");
+                  }}
+                >
+                  Vote
+                </Button>
               </div>
-              {listingPrice && (
-                <div>
-                  <Button
-                    onClick={async () => {
-                      await handleSales(nft);
-                    }}
-                    loading={loading}
-                  >
-                    List for
-                    <span className="mx-1 font-semibold gradient-text">
-                      {listingPrice}
-                    </span>
-                    token
-                  </Button>
-                </div>
-              )}
             </div>
           ))}
       </div>
@@ -145,4 +105,4 @@ const MyNFT = ({ isForSale = false }: { isForSale?: boolean }) => {
   );
 };
 
-export default MyNFT;
+export default PendingEventList;

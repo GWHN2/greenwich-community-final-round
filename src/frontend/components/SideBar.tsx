@@ -2,7 +2,6 @@ import {
   ArrowsRightLeftIcon,
   BanknotesIcon,
   BookOpenIcon,
-  ClockIcon,
   DocumentChartBarIcon,
   HomeIcon,
   InformationCircleIcon,
@@ -10,6 +9,7 @@ import {
   ShoppingBagIcon,
   SparklesIcon,
   StarIcon,
+  TicketIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
@@ -82,6 +82,11 @@ const SideBar = () => {
             title: "Transfer Tokens",
             icon: <ArrowsRightLeftIcon />,
             path: "/transfer",
+          },
+          {
+            title: "Stake Tokens",
+            icon: <TicketIcon />,
+            path: "/staking",
           },
         ];
       case "employer":

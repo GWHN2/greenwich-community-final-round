@@ -10,9 +10,18 @@ import {
   createActor as createMarketplaceActor,
   canisterId as marketplaceCanisterId,
 } from "../../declarations/marketplace";
+import {
+  createActor as createStakingActor,
+  canisterId as stakingCanisterId,
+} from "../../declarations/staking";
 
 export const host = process.env.NEXT_PUBLIC_IC_HOST;
-export const canisterId = { token: tokenCanisterId, nft: nftCanisterId };
+export const canisterId = {
+  token: tokenCanisterId,
+  nft: nftCanisterId,
+  marketplace: marketplaceCanisterId,
+  staking: stakingCanisterId,
+};
 
 export const makeActor = (canisterId: any, createActor: any) => {
   return createActor(canisterId, {
@@ -31,4 +40,7 @@ export function makeNftActor() {
 
 export function makeMarketplaceActor() {
   return makeActor(marketplaceCanisterId, createMarketplaceActor);
+}
+export function makeStakingActor() {
+  return makeActor(stakingCanisterId, createStakingActor);
 }

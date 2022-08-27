@@ -11,7 +11,7 @@ import Result "mo:base/Result";
 import Time "mo:base/Time";
 
 shared(msg) actor class Token() {
-	stable var logo_ : Text = "https://via.placeholder.com/500";
+	stable var logo_ : Text = "https://bafybeiath34dyfx3it5vcmnvfq2om3cjwmrh5vqs3476ydw3zhk3deqzay.ipfs.dweb.link/f1ec5439-8a74-43bd-ade5-d346b3464371.png";
 	
 	stable var decimals_ : Nat8 = 2;
 	

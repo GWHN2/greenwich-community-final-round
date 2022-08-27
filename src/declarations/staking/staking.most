@@ -1,0 +1,17 @@
+// Version: 1.0.0
+type StakingInfo =
+  {
+    amount : Nat;
+    owner : Principal;
+    startTime : Time;
+    timePoint : Time;
+    totalProfit : Nat
+  };
+type StakingPackage =
+  {fee : Float; id : Nat; isOff : Bool; lockTime : Time; minStaking : Nat};
+type Time = Int;
+actor {
+  stable var idCounter : Nat;
+  stable var stakingInfo : [(Principal, [(Nat, StakingInfo)])];
+  stable var stakings : [(Nat, StakingPackage)]
+};
