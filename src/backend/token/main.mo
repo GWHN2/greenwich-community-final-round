@@ -10,12 +10,7 @@ import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Time "mo:base/Time";
 
-shared({caller}) actor class Token() {
-	public shared query (doIHaveTokens__msg) func doIHaveTokens(minimum : Nat) : async Bool {
-		let caller = doIHaveTokens__msg.caller; // First input
-		_balanceOf(caller) >= minimum;
-	};
-	
+shared(msg) actor class Token() {
 	stable var logo_ : Text = "https://via.placeholder.com/500";
 	
 	stable var decimals_ : Nat8 = 2;
@@ -28,7 +23,7 @@ shared({caller}) actor class Token() {
 	
 	stable var fee_ : Nat = 1;
 	
-	stable var owner_ : Principal = caller;
+	stable var owner_ : Principal = msg.caller;
 	
 	// Adapted from: https://github.com/Psychedelic/DIP20/blob/main/motoko/src/token.mo
 	
@@ -176,11 +171,11 @@ shared({caller}) actor class Token() {
 	*/
 	
 	/// Transfers value amount of tokens to Principal to.
-	public shared(msg) func transfer(to: Principal, value: Nat) : async TxReceipt {
-		if (_balanceOf(msg.caller) < value + fee) { return #Err(#InsufficientBalance); };
-		_chargeFee(msg.caller, fee);
-		_transfer(msg.caller, to, value);
-		let txid = addRecord(null, #transfer, msg.caller, to, value, fee, Time.now(), #succeeded);
+	public shared(msg) func transfer(from : Principal, to: Principal, value: Nat) : async TxReceipt {
+		if (_balanceOf(from) < value + fee) { return #Err(#InsufficientBalance); };
+		_chargeFee(from, fee);
+		_transfer(from, to, value);
+		let txid = addRecord(null, #transfer, from, to, value, fee, Time.now(), #succeeded);
 		return #Ok(txid);
 	};
 	
