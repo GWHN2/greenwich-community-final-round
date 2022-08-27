@@ -13,7 +13,7 @@ const configs = require('../configs');
 const jwt = require('jsonwebtoken');
 
 const getAllUsers = asyncWrapper(async (req, res) => {
-  const users = await userModel.find({});
+  const users = await userModel.find({}).populate('roles');
   res.status(200).json({ status: 200, data: users });
 });
 
