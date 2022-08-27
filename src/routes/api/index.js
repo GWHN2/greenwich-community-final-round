@@ -5,6 +5,7 @@ const eventRouter = require('./event.route');
 const userRouter = require('./user.route');
 const adRouter = require('./ad.route');
 const marketplaceRouter = require('./marketplace.route');
+const roleRouter = require('./role.route');
 
 const apiRouter = express.Router();
 
@@ -14,5 +15,6 @@ apiRouter.use('/courses', courseRouter);
 apiRouter.use('/events', eventRouter);
 apiRouter.use('/ads', adRouter);
 apiRouter.use('/marketplace', marketplaceRouter);
+apiRouter.use('/roles', roleRouter);
 
 module.exports = apiRouter;

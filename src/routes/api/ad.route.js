@@ -3,7 +3,7 @@ const {
   verifyToken,
   verifyEmployer,
 } = require('../../middlewares/auth.middleware');
-const adRoute = express.Router();
+const adRouter = express.Router();
 const {
   getAllAds,
   createAd,
@@ -12,10 +12,10 @@ const {
   deleteAd,
 } = require('../../controllers/ad.controller');
 
-adRoute.get('/', verifyToken, getAllAds);
-adRoute.post('/', verifyToken, verifyEmployer, createAd);
-adRoute.get('/:id', verifyToken, getAd);
-adRoute.patch('/:id', verifyToken, verifyEmployer, updateAd);
-adRoute.delete('/:id', verifyToken, verifyEmployer, deleteAd);
+adRouter.get('/', verifyToken, getAllAds);
+adRouter.post('/', verifyToken, verifyEmployer, createAd);
+adRouter.get('/:id', verifyToken, getAd);
+adRouter.patch('/:id', verifyToken, verifyEmployer, updateAd);
+adRouter.delete('/:id', verifyToken, verifyEmployer, deleteAd);
 
-module.exports = adRoute;
+module.exports = adRouter;
