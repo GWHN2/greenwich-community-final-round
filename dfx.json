@@ -7,6 +7,14 @@
     "nft": {
       "type": "motoko",
       "main": "src/backend/nft/main.mo"
+    },
+    "marketplace" :{
+      "type" : "motoko",
+      "main" : "src/backend/marketplace/main.mo"
+    },
+    "staking" : {
+      "type" : "motoko",
+      "main" : "src/backend/staking/main.mo"
     }
   },
   "defaults": {

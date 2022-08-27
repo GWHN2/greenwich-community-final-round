@@ -2,6 +2,7 @@ import HashMap "mo:base/HashMap";
 import Time "mo:base/Time";
 module {
     // ledger types
+    public type TokenId = Nat;
     public type Operation = {
         #approve;
         #mint;
@@ -42,7 +43,7 @@ module {
 
     // Dip20 token interface
     public type IDIP20 = actor {
-        transfer : (Principal,Principal,Nat) ->  async TxReceipt;
+        transfer : (from: Principal,to: Principal,value:Nat) ->  async TxReceipt;
         transferFrom : (Principal,Principal,Nat) -> async TxReceipt;
         approve: (caller: Principal, spender: Principal, value: Nat) -> async TxReceipt;
         getMetadata: () -> async Metadata;
@@ -53,56 +54,39 @@ module {
         name: Text;
         url: Text;
         description: Text;
+        owner:Principal;
     };
-    
-    //Dip721 interface
     public type IDIP721 = actor {
        isApprovedForAll: (Principal, Principal) -> async Bool;
        getApproved: (Nat) ->  async Principal;
        ownerOf: (Nat) -> async ?Principal;
        transferFrom: (Principal, Principal, Nat) -> async ();
-       transfer: (tokenId: Nat, to: Principal) -> async TxReceipt;
+       transfer: (from:Principal,tokenId:Nat, to:Principal) -> async TxReceipt;
        getTokenInfo: (tokenId: Nat) -> async ?dip721Metadata;
+       getAllNfts : () -> async ();
     };
+    public type listNft = {
+        listId : Nat;
+        tokenId: Nat;
+        price: Nat;
+        seller : Principal;
+        name: Text;
+        description:Text;
+        url : Text;
+        status : Text;
+    };
+    public type boughtList = {
+        tokenId : Nat;
+        price : Nat;
+        seller: Principal;
+        buyer : Principal;
+    };
+    
+    //Dip721 interface
+  
 
     public type IStaking = actor {
         isStake: (Principal) -> async Bool;
-    };
-
-
-    //========================================================== Become seller
-    public type Seller = {
-        id: Principal;
-        username: Text;
-        email: Text;
-        locationTime: Text;
-        description: Text;
-        social: Text;
-        avatar: Text;
-    };
-
-    public type SellerCreate = {
-        username: Text;
-        email: Text;
-        locationTime: Text;
-        description: Text;
-        social: Text;
-        avatar: Text;
-    };
-
-    public type SellerUpdate = {
-        username: Text;
-        locationTime: Text;
-        description: Text;
-        social: Text;
-        avatar: Text;
-    };
-
-    public type ApiSellerError = {
-        #Unauthorized;
-        #InvalidData;
-        #AlreadySeller;
-        #NotSeller;
     };
 
     //========================================================== Error
@@ -117,15 +101,10 @@ module {
         #InvalidAuctionType;
         #Other;
     };
+    
 
     public type Result<T, E> = {
         #Ok: T;
         #Err: E;
     };
-
-    public type SupportedPaymentResult = Result<Bool, ApiError>;
-    public type CancelOrderResult = Result<Bool, AuctionError>;
-    public type ManageResult = Result<Bool, AuctionError>;
-
-    public type SellerErrorResult = Result<Bool, ApiSellerError>;
 }

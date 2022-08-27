@@ -9,7 +9,7 @@ import {
 import { getHeaders } from '../../utils/getHeaders';
 import Button from '../common/Button';
 import RefetchButton from '../common/RefetchButton';
-import Course from '../Courses/Course';
+import { Item } from '../Item';
 
 const EventList = () => {
   const userRole = useRecoilValue(UserRoleState);
@@ -45,7 +45,7 @@ const EventList = () => {
           <Button
             onClick={() => {
               setEditingItem(null);
-              setShowingModal('ManageCourse');
+              setShowingModal('ManageItem');
             }}
           >
             Add
@@ -57,7 +57,7 @@ const EventList = () => {
           events.map((course: any, index: number) => {
             return (
               <div key={index}>
-                <Course {...course} />
+                <Item {...course} />
               </div>
             );
           })}
