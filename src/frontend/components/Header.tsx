@@ -14,7 +14,7 @@ const Header = () => {
   return (
     <header id="header" className="w-full bg-white drop-shadow-md">
       <div className="container flex flex-row items-center justify-between h-24 p-4">
-        <div className="dropdown-container">
+        <div className="">
           <Button
             onClick={() => {
               if (!userData?._id) {

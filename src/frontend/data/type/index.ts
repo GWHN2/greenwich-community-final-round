@@ -40,7 +40,7 @@ export type EventData = {
 
 export type NFTData = {
   description: string;
-  id: number;
+  id: bigint;
   name: string;
   owner: Principal;
   url: string;
