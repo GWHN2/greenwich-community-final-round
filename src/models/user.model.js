@@ -5,10 +5,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  dateOfBirth: {
-    type: String,
-    required: false,
-  },
   password: {
     type: String,
     required: true,
@@ -16,6 +12,14 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+  },
+  studentID: {
+    type: String,
+    required: true,
+  },
+  dateOfBirth: {
+    type: String,
+    required: false,
   },
   principalID: {
     type: String,

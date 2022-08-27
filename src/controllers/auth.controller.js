@@ -1,9 +1,10 @@
+require('dotenv').config();
 const configs = require('../configs');
 const { asyncWrapper } = require('../utils');
-const UserModel = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const roleModel = require('../models/role.model');
+const userModel = require('../models/user.model');
 const {
   formatRoles,
   getCodes,
@@ -13,20 +14,22 @@ const {
 
 const signup = asyncWrapper(async (req, res) => {
   // TODO: set default roles to STUDENT, ADMIN role will only able to be set by admin
-
   let { username, password, roles } = req.body;
 
   roles = !roles || roles === '' ? ['Student'] : roles;
   roles = !Array.isArray(roles) ? [roles] : roles;
 
   // check if user already exists
-  const user = await UserModel.findOne({ username });
+  const user = await userModel.findOne({ username });
   if (user) {
     return res.status(400).json({ status: 400, msg: 'User already exists' });
   }
 
   // encrypt password
-  const encryptedPassword = await bcrypt.hash(password, 10);
+  const encryptedPassword = await bcrypt.hash(
+    password,
+    process.env.SALT_ROUNDS
+  );
   req.body.password = encryptedPassword;
 
   // add roles
@@ -48,7 +51,7 @@ const signup = asyncWrapper(async (req, res) => {
   req.body.roles = roles;
 
   // create new user
-  const newUser = await UserModel.create(req.body);
+  const newUser = await userModel.create(req.body);
 
   // create token
   const token = jwt.sign({ _id: newUser._id }, configs.jwt.secret, {
@@ -77,7 +80,7 @@ const login = asyncWrapper(async (req, res) => {
   }
 
   // check if user already exists
-  const user = await UserModel.findOne({ username }).populate('roles');
+  const user = await userModel.findOne({ username }).populate('roles');
   if (!user) {
     return res.status(400).json({ status: 400, msg: 'Invalid username' });
   }
@@ -107,7 +110,7 @@ const login = asyncWrapper(async (req, res) => {
 
 const logout = asyncWrapper(async (req, res) => {
   // log out user by removing token
-  const user = await UserModel.findById(req.user._id);
+  const user = await userModel.findById(req.user._id);
   user.access_token = '';
   await user.save();
 
@@ -119,7 +122,7 @@ const logout = asyncWrapper(async (req, res) => {
 
 const checkTokenExpired = asyncWrapper(async (req, res) => {
   // check if token is expired
-  const user = await UserModel.findById(req.user._id);
+  const user = await userModel.findById(req.user._id);
   if (!user) {
     return res.status(400).json({ status: 400, msg: 'Invalid token' });
   }
