@@ -5,6 +5,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  dateOfBirth: {
+    type: String,
+    required: false,
+  },
   password: {
     type: String,
     required: true,
@@ -26,6 +30,10 @@ const userSchema = new mongoose.Schema({
   code: {
     type: String,
     required: false,
+  },
+  tokens: {
+    type: Number,
+    required: true,
   },
   access_token: {
     type: String,
