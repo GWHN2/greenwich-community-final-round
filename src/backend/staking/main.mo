@@ -14,7 +14,7 @@ import Time "mo:base/Time";
 import Types "types";
 
 shared(msg) actor class Staking(dip20: Principal) = Self {
-    private var owner = caller;
+    private var owner = msg.caller;
     private stable var idCounter: Nat = 1;
 
     private var tokenProvider: Types.IDIP20 = actor(Principal.toText(dip20)) : Types.IDIP20;

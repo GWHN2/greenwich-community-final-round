@@ -140,7 +140,6 @@ shared(msg) actor class Nft() = Self{
     var result = Buffer.Buffer<Types.NftResp>(10);
     for (i in Iter.fromArray(tokenIds.toArray())) {
       var data = _unwrap(tokenIdToMetadata.get(i));
-        if (data.owner == principalId){
             var new_data: Types.NftResp = {
                 id= i;
                 name= data.name;
@@ -150,7 +149,6 @@ shared(msg) actor class Nft() = Self{
             };
 
             result.add(new_data);
-        };
     };
 
     return result.toArray();
