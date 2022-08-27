@@ -1,3 +1,5 @@
+const createCustomError = require('./custom_error');
+
 const asyncWrapper = (fn) => {
   return async (req, res, next) => {
     try {
@@ -12,4 +14,4 @@ const asyncWrapper = (fn) => {
   };
 };
 
-module.exports = { asyncWrapper };
+module.exports = { asyncWrapper, createCustomError };

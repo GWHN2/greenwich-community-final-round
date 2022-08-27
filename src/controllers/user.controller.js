@@ -1,7 +1,6 @@
 require('dotenv').config();
 const userModel = require('../models/user.model');
 const { asyncWrapper } = require('../utils');
-const { createCustomError } = require('../utils/custom-error');
 const bcrypt = require('bcrypt');
 const {
   formatRoles,

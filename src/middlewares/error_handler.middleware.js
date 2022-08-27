@@ -1,14 +1,14 @@
-const { CustomAPIError } = require('../utils/custom-error');
-
 const errorHandler = (err, req, res) => {
-  if (err instanceof CustomAPIError) {
-    return res
-      .status(err.statusCode)
-      .json({ status: err.statusCode, msg: err.message });
-  }
   return res
     .status(err.statusCode)
-    .json({ status: err.statusCode, msg: err.message });
+    .send({ status: err.statusCode, msg: err.message });
 };
 
-module.exports = errorHandler;
+const notFound = (req, res) => {
+  res.status(404).send({ status: 404, msg: 'Route does not exist' });
+};
+
+module.exports = {
+  errorHandler,
+  notFound,
+};
