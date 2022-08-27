@@ -61,6 +61,16 @@ export type ProductData = {
   code: string;
 };
 
+export type GradeData = {
+  _id: string;
+  subjectName: string;
+  subjectCode: string;
+  subjectStatus: string;
+  grade: number;
+  tokens: number;
+  studentID: string;
+};
+
 export type NFTData = {
   description: string;
   id: number;
