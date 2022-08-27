@@ -1,27 +1,37 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
-import { UserRoleState } from "../../data/globalState";
+import { SessionDataState, UserRoleState } from "../../data/globalState";
 import Button from "../common/Button";
 import avatar from "../../../public/images/avatar.png";
+import { useState, useEffect } from "react";
+import { balanceOf } from "../../service/token-service";
 
 export interface ProfileProps {
   image: any;
   username: string;
   dateOfBirth: string;
   studentID: string;
-  tokens: number;
 }
 
 const Profile = ({
   image,
   username,
   dateOfBirth,
-  studentID = 'N/A',
-  tokens,
+  studentID = "N/A",
 }: ProfileProps) => {
   const router = useRouter();
   const userRole = useRecoilValue(UserRoleState);
+  const sessiondata = useRecoilValue(SessionDataState);
+  const [balance, setBalance] = useState("0");
+
+  useEffect(() => {
+    (async () => {
+      const _balance = await balanceOf(sessiondata?.principalId as string);
+
+      setBalance(_balance.toString());
+    })();
+  }, []);
 
   return (
     <div className="relative bg-white rounded-lg shadow-lg">
@@ -45,7 +55,7 @@ const Profile = ({
           {userRole === "Student" && (
             <div>
               <Label
-                text={tokens.toString()}
+                text={balance?.toString()}
                 label="Number of Token"
                 className="font-semibold gradient-text"
               />
@@ -61,7 +71,7 @@ const Profile = ({
           {userRole === "Admin" && (
             <div>
               <Label
-                text={tokens.toString()}
+                text={balance.toString()}
                 label="Number of Token"
                 className="font-semibold gradient-text"
               />

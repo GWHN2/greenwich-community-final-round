@@ -48,7 +48,6 @@ type Token =
    balanceOf: (principal) -> (nat) query;
    burn: (nat) -> (TxReceipt);
    decimals: () -> (nat8) query;
-   doIHaveTokens: (nat) -> (bool) query;
    getAllowanceSize: () -> (nat) query;
    getHolders: (nat, nat) -> (vec record {
                                     principal;
@@ -76,7 +75,7 @@ type Token =
    setOwner: (principal) -> () oneway;
    symbol: () -> (text) query;
    totalSupply: () -> (nat) query;
-   transfer: (principal, nat) -> (TxReceipt);
+   transfer: (principal, principal, nat) -> (TxReceipt);
    transferFrom: (principal, principal, nat) -> (TxReceipt);
  };
 type Time = int;
