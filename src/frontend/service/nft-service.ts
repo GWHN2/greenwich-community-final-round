@@ -25,11 +25,9 @@ export const mintNFT = async ({
   return result;
 };
 
-export const getMyNfts = async (ownerPrincipalId: string) => {
+export const getMyNfts = async () => {
   const actorService = await makeNftActor();
-  const result = await actorService.getMyNfts(
-    Principal.fromText(ownerPrincipalId)
-  );
+  const result = await actorService.getAllNfts();
   return result;
 };
 
@@ -42,7 +40,7 @@ export const transferNFT = async (
   const fromId = Principal.fromText(from);
   const toId = Principal.fromText(to);
 
-  const result = await actorService.transferFrom(fromId, toId, tokenId);
+  const result = await actorService.transfer(fromId, tokenId, toId);
 
   return result;
 };

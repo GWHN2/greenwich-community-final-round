@@ -37,7 +37,7 @@ type Nft =
    mint: (metadata) -> (MintResult);
    ownerOf: (TokenId) -> (opt principal) query;
    setApprovalForAll: (principal, bool) -> ();
-   transfer: (TokenId, principal) -> (TxReceipt);
+   transfer: (principal, TokenId, principal) -> (TxReceipt);
    transferFrom: (principal, principal, nat) -> ();
  };
 type MintResult = 

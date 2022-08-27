@@ -10,7 +10,7 @@ import {
   UserRoleState,
 } from "../../data/globalState";
 import { ACCESS_TOKEN } from "../../data/localStorage";
-import { approve, balanceOf, transferFrom } from "../../service/token-service";
+import { approve, balanceOf, transfer } from "../../service/token-service";
 import Button from "../common/Button";
 import HookForm from "../common/HookForm";
 import Titles from "../common/Titles";
@@ -38,26 +38,14 @@ const TransferFrom = () => {
   const handleTransfer = async () => {
     setLoading(true);
     try {
-      console.log(sessiondata?.principalId);
-      console.log(formValues.PrincipalId);
-      const balance = await balanceOf(sessiondata?.principalId as string);
-      console.log(balance);
-      const approved = await approve(
-        "n3zld-k42mj-idvze-l4tw7-jl2dj-ucevs-aarkk-5qzt5-n3lmz-25rc2-pae",
+      const response = await transfer(
+        sessiondata?.principalId as string,
+        formValues.PrincipalId,
         +formValues.amount
       );
-      console.log("approved", approved);
 
-      if (approved.Ok) {
-        const response = await transferFrom(
-          sessiondata?.principalId as string,
-          formValues.PrincipalId,
-          +formValues.amount
-        );
-        console.log(response);
-        if (response?.Ok) {
-          toast.success("Transfer Successful");
-        }
+      if (response?.Ok) {
+        toast.success("Transfer Successful");
       }
     } catch (error) {
       console.log(error);

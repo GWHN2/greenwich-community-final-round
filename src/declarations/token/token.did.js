@@ -64,7 +64,6 @@ export const idlFactory = ({ IDL }) => {
     'balanceOf' : IDL.Func([IDL.Principal], [IDL.Nat], ['query']),
     'burn' : IDL.Func([IDL.Nat], [TxReceipt], []),
     'decimals' : IDL.Func([], [IDL.Nat8], ['query']),
-    'doIHaveTokens' : IDL.Func([IDL.Nat], [IDL.Bool], ['query']),
     'getAllowanceSize' : IDL.Func([], [IDL.Nat], ['query']),
     'getHolders' : IDL.Func(
         [IDL.Nat, IDL.Nat],
@@ -106,7 +105,11 @@ export const idlFactory = ({ IDL }) => {
     'setOwner' : IDL.Func([IDL.Principal], [], ['oneway']),
     'symbol' : IDL.Func([], [IDL.Text], ['query']),
     'totalSupply' : IDL.Func([], [IDL.Nat], ['query']),
-    'transfer' : IDL.Func([IDL.Principal, IDL.Nat], [TxReceipt], []),
+    'transfer' : IDL.Func(
+        [IDL.Principal, IDL.Principal, IDL.Nat],
+        [TxReceipt],
+        [],
+      ),
     'transferFrom' : IDL.Func(
         [IDL.Principal, IDL.Principal, IDL.Nat],
         [TxReceipt],

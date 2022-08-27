@@ -1,13 +1,12 @@
-import React from "react";
-import ManageCourseModal from "./Modal/ManageCourseModal";
-import MintNFTModal from "./Modal/MintNFTModal";
-import TransferNFTModal from "./Modal/TransferNFTModal";
+import ManageItemModal from './Modal/ManageItemModal';
+import MintNFTModal from './Modal/MintNFTModal';
+import TransferNFTModal from './Modal/TransferNFTModal';
 
 const ModalContainer = () => {
   return (
     <>
       <MintNFTModal />
-      <ManageCourseModal />
+      <ManageItemModal />
       <TransferNFTModal />
     </>
   );

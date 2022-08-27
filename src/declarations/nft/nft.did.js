@@ -44,7 +44,11 @@ export const idlFactory = ({ IDL }) => {
     'mint' : IDL.Func([metadata], [MintResult], []),
     'ownerOf' : IDL.Func([TokenId], [IDL.Opt(IDL.Principal)], ['query']),
     'setApprovalForAll' : IDL.Func([IDL.Principal, IDL.Bool], [], []),
-    'transfer' : IDL.Func([TokenId, IDL.Principal], [TxReceipt], []),
+    'transfer' : IDL.Func(
+        [IDL.Principal, TokenId, IDL.Principal],
+        [TxReceipt],
+        [],
+      ),
     'transferFrom' : IDL.Func([IDL.Principal, IDL.Principal, IDL.Nat], [], []),
   });
   return Nft;

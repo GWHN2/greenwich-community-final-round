@@ -23,7 +23,7 @@ export interface Nft {
   'mint' : ActorMethod<[metadata], MintResult>,
   'ownerOf' : ActorMethod<[TokenId], [] | [Principal]>,
   'setApprovalForAll' : ActorMethod<[Principal, boolean], undefined>,
-  'transfer' : ActorMethod<[TokenId, Principal], TxReceipt>,
+  'transfer' : ActorMethod<[Principal, TokenId, Principal], TxReceipt>,
   'transferFrom' : ActorMethod<[Principal, Principal, bigint], undefined>,
 }
 export interface NftResp {

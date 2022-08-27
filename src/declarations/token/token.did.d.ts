@@ -22,7 +22,6 @@ export interface Token {
   'balanceOf' : ActorMethod<[Principal], bigint>,
   'burn' : ActorMethod<[bigint], TxReceipt>,
   'decimals' : ActorMethod<[], number>,
-  'doIHaveTokens' : ActorMethod<[bigint], boolean>,
   'getAllowanceSize' : ActorMethod<[], bigint>,
   'getHolders' : ActorMethod<[bigint, bigint], Array<[Principal, bigint]>>,
   'getMetadata' : ActorMethod<[], Metadata>,
@@ -47,7 +46,7 @@ export interface Token {
   'setOwner' : ActorMethod<[Principal], undefined>,
   'symbol' : ActorMethod<[], string>,
   'totalSupply' : ActorMethod<[], bigint>,
-  'transfer' : ActorMethod<[Principal, bigint], TxReceipt>,
+  'transfer' : ActorMethod<[Principal, Principal, bigint], TxReceipt>,
   'transferFrom' : ActorMethod<[Principal, Principal, bigint], TxReceipt>,
 }
 export interface TokenInfo {

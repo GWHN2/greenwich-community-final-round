@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { getMyNfts } from "../../service/nft-service";
 import { NFTData } from "../../data/type";
 import Titles from "../common/Titles";
+import { shortenAddress } from "../../utils/stringsFunction";
 
 export interface ProfileProps {
   image: any;
@@ -32,17 +33,19 @@ const MyNFT = ({ isForSale = false }: { isForSale?: boolean }) => {
   useEffect(() => {
     (async () => {
       try {
-        const nfts = await getMyNfts(sectionData?.principalId as string);
-        if (nfts) {
-          setMyNfts(nfts);
-        }
-      } catch (error) {
-        console.log(error);
-      }
+        const nfts = await getMyNfts();
+        const filteredNfts = nfts.filter((nft: any) => {
+          return (
+            nft[1].owner?.toString() === (sectionData?.principalId as string)
+          );
+        });
+
+        setMyNfts(filteredNfts.map((nft: any) => nft[1]));
+      } catch (error) {}
     })();
   }, []);
 
-  const handleSales = async (nftId: bigint) => {};
+  const handleSales = async (nft: NFTData) => {};
 
   return (
     <div className="pb-10">
@@ -65,11 +68,15 @@ const MyNFT = ({ isForSale = false }: { isForSale?: boolean }) => {
 
               <span className="">Name: {nft.name}</span>
               <span className="">Description: {nft.description}</span>
+              <span className="">
+                Owner: {shortenAddress(nft.owner.toString())}
+              </span>
+
               <div className="dropdown-item">
                 {isForSale ? (
                   <Button
                     onClick={async () => {
-                      await handleSales(nft.id);
+                      await handleSales(nft);
                     }}
                   >
                     Sale

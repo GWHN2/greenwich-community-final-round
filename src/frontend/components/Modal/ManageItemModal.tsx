@@ -1,20 +1,20 @@
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { useQuery } from "react-query";
-import { toast } from "react-toastify";
-import { useRecoilState, useResetRecoilState } from "recoil";
-import API from "../../data/api";
-import { EditingItemIdState, ShowingModalState } from "../../data/globalState";
-import { getHeaders } from "../../utils/getHeaders";
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useQuery } from 'react-query';
+import { toast } from 'react-toastify';
+import { useRecoilState, useResetRecoilState } from 'recoil';
+import API from '../../data/api';
+import { EditingItemIdState, ShowingModalState } from '../../data/globalState';
+import { getHeaders } from '../../utils/getHeaders';
 
-import Button from "../common/Button";
-import HookForm from "../common/HookForm";
-import Modal from "../common/Modal";
-import RefetchButton from "../common/RefetchButton";
-import Titles from "../common/Titles";
-import UploadingFilesToIPFS from "../Rating/UploadingFilesToIPFS";
+import Button from '../common/Button';
+import HookForm from '../common/HookForm';
+import Modal from '../common/Modal';
+import RefetchButton from '../common/RefetchButton';
+import Titles from '../common/Titles';
+import UploadingFilesToIPFS from '../Rating/UploadingFilesToIPFS';
 
-const ManageCourseModal = () => {
+const ManageItemModal = () => {
   const [showingModal, setShowingModal] = useRecoilState(ShowingModalState);
   const [editingItemId, setEditingItemId] = useRecoilState(EditingItemIdState);
   const resetEditingItemId = useResetRecoilState(EditingItemIdState);
@@ -23,7 +23,7 @@ const ManageCourseModal = () => {
   const asPath = router.asPath;
 
   const { isLoading, data, isError, refetch } = useQuery(
-    ["editingItemId", editingItemId],
+    ['editingItemId', editingItemId],
     async (): Promise<any> => {
       if (editingItemId) {
         const headers = getHeaders();
@@ -45,36 +45,36 @@ const ManageCourseModal = () => {
   );
 
   const defaultValues = {
-    name: "",
-    imageUrl: "",
-    code: "",
-    tokens: "",
-    description: "",
+    name: '',
+    imageUrl: '',
+    code: '',
+    tokens: '',
+    description: '',
   };
 
   const [formValues, setFormValues] = useState(defaultValues);
 
   const textInputs = [
     {
-      placeholder: "Enter name",
-      name: "name",
+      placeholder: 'Enter name',
+      name: 'name',
     },
     {
-      placeholder: "Enter imageUrl",
-      name: "imageUrl",
+      placeholder: 'Enter imageUrl',
+      name: 'imageUrl',
     },
     {
-      placeholder: "Enter code",
-      name: "code",
+      placeholder: 'Enter code',
+      name: 'code',
     },
     {
-      placeholder: "Enter tokens",
-      name: "tokens",
-      type: "number",
+      placeholder: 'Enter tokens',
+      name: 'tokens',
+      type: 'number',
     },
     {
-      placeholder: "Enter description",
-      name: "description",
+      placeholder: 'Enter description',
+      name: 'description',
     },
   ];
 
@@ -82,14 +82,14 @@ const ManageCourseModal = () => {
     try {
       const headers = getHeaders();
       const response = await API.patch(
-        `/events/${editingItemId}`,
+        `${asPath}/${editingItemId}`,
         {
           ...formValues,
         },
         { headers }
       );
       if (response.status === 200) {
-        toast.success(asPath + " Edit successfully");
+        toast.success(asPath + ' Edit successfully');
       }
     } catch (error) {
       console.log(error);
@@ -100,14 +100,14 @@ const ManageCourseModal = () => {
     try {
       const headers = getHeaders();
       const response = await API.post(
-        `/events`,
+        asPath,
         {
           ...formValues,
         },
         { headers }
       );
       if (response.status === 200) {
-        toast.success(asPath + " Added successfully");
+        toast.success(asPath + ' Added successfully');
       }
     } catch (error) {
       console.log(error);
@@ -116,9 +116,9 @@ const ManageCourseModal = () => {
 
   return (
     <Modal
-      isOpen={showingModal.includes("ManageCourse")}
+      isOpen={showingModal.includes('ManageItem')}
       onClose={() => {
-        setShowingModal("");
+        setShowingModal('');
         resetEditingItemId();
       }}
     >
@@ -127,23 +127,23 @@ const ManageCourseModal = () => {
       ) : (
         <>
           <Titles
-            title={`${editingItemId ? "Edit" : "Add"} ${asPath.replace(
-              "/",
-              ""
+            title={`${editingItemId ? 'Edit' : 'Add'} ${asPath.replace(
+              '/',
+              ''
             )}`}
-            className="pt-0 text-center"
+            className='pt-0 text-center'
           />
           <UploadingFilesToIPFS />
-          <div className="flex flex-col items-center justify-center space-y-5">
+          <div className='flex flex-col items-center justify-center space-y-5'>
             <HookForm
-              className="grid-cols-2"
+              className='grid-cols-2'
               textInputs={textInputs}
               defaultValues={data || defaultValues}
               onTextChange={(values) => {
                 setFormValues(values as any);
               }}
             />
-            <div className="flex justify-center">
+            <div className='flex justify-center'>
               <Button
                 loading={loading}
                 onClick={async () => {
@@ -156,7 +156,7 @@ const ManageCourseModal = () => {
                   setLoading(false);
                 }}
               >
-                {editingItemId ? "Edit" : "Add"}
+                {editingItemId ? 'Edit' : 'Add'}
               </Button>
             </div>
           </div>
@@ -166,4 +166,4 @@ const ManageCourseModal = () => {
   );
 };
 
-export default ManageCourseModal;
+export default ManageItemModal;
