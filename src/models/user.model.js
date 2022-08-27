@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
   },
   studentID: {
     type: String,
-    required: true,
+    required: false,
   },
   dateOfBirth: {
     type: String,

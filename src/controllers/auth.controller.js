@@ -28,7 +28,7 @@ const signup = asyncWrapper(async (req, res) => {
   // encrypt password
   const encryptedPassword = await bcrypt.hash(
     password,
-    process.env.SALT_ROUNDS
+    Number(process.env.SALT_ROUNDS)
   );
   req.body.password = encryptedPassword;
 
