@@ -39,6 +39,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  grades: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Grade',
+    },
+  ],
 });
 
 module.exports = mongoose.model('User', userSchema);

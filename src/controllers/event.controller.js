@@ -1,6 +1,5 @@
 const eventModel = require('../models/event.model');
 const { asyncWrapper } = require('../utils');
-const { createCustomError } = require('../utils/custom-error');
 
 const getAllEvents = asyncWrapper(async (req, res) => {
   const events = await eventModel.find({});
@@ -30,7 +29,7 @@ const getEvent = asyncWrapper(async (req, res) => {
   if (!event) {
     return res.status(404).json({
       status: 404,
-      msg: 'Course not found',
+      msg: 'Event not found',
     });
   }
   res.status(200).json({
@@ -48,7 +47,7 @@ const updateEvent = asyncWrapper(async (req, res) => {
   if (!event) {
     return res.status(404).json({
       status: 404,
-      msg: 'Course not found',
+      msg: 'Event not found',
     });
   }
   res.status(200).json({
@@ -63,7 +62,7 @@ const deleteEvent = asyncWrapper(async (req, res) => {
   if (!event) {
     return res.status(404).json({
       status: 404,
-      msg: 'Course not found',
+      msg: 'Event not found',
     });
   }
   res.status(200).json({

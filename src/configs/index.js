@@ -1,6 +1,7 @@
 require('dotenv').config();
 const mongooseConfig = require('./mongoose.config');
 const ROLES = require('./role.config');
+const SUBJECT_STATUS = require('./subject_status.config');
 
 const configs = {
   jwt: {
@@ -9,6 +10,7 @@ const configs = {
   },
   mongoose: mongooseConfig,
   roles: ROLES,
+  subjectStatus: SUBJECT_STATUS,
 };
 
 module.exports = configs;

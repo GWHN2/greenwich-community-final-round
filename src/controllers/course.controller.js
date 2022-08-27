@@ -1,6 +1,5 @@
 const courseModel = require('../models/course.model');
 const { asyncWrapper } = require('../utils');
-const { createCustomError } = require('../utils/custom-error');
 
 const getAllCourses = asyncWrapper(async (req, res) => {
   const courses = await courseModel.find({});
@@ -27,7 +26,10 @@ const getCourse = asyncWrapper(async (req, res) => {
   const { id: courseID } = req.params;
   const course = await courseModel.findOne({ _id: courseID });
   if (!course) {
-    return next(createCustomError('Course not found', 404));
+    return res.status(404).json({
+      status: 404,
+      msg: 'Course not found',
+    });
   }
   res.status(200).json({
     status: 200,
@@ -46,7 +48,10 @@ const updateCourse = asyncWrapper(async (req, res) => {
     }
   );
   if (!course) {
-    return next(createCustomError('Course not found', 404));
+    return res.status(404).json({
+      status: 404,
+      msg: 'Course not found',
+    });
   }
   res.status(200).json({
     status: 200,
@@ -58,7 +63,10 @@ const deleteCourse = asyncWrapper(async (req, res) => {
   const { id: courseID } = req.params;
   const course = await courseModel.findOneAndDelete({ _id: courseID });
   if (!course) {
-    return next(createCustomError('Course not found', 404));
+    return res.status(404).json({
+      status: 404,
+      msg: 'Course not found',
+    });
   }
   res.status(200).json({
     status: 200,

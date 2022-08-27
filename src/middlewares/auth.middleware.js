@@ -90,4 +90,13 @@ const verifyEmployer = async (req, res, next) => {
   }
 };
 
-module.exports = { verifyToken, verifyAdmin, verifyEmployer };
+const verifySameUser = async (req, res, next) => {
+  req.user._id === req.body.studentID
+    ? next()
+    : res.status(403).send({
+        status: 403,
+        msg: 'You are not authorized to perform this action',
+      });
+};
+
+module.exports = { verifyToken, verifyAdmin, verifyEmployer, verifySameUser };

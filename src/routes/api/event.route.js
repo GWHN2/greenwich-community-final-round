@@ -14,8 +14,8 @@ const {
 } = require('../../middlewares/auth.middleware');
 
 eventRouter.get('/', verifyToken, getAllEvents);
-eventRouter.post('/', verifyToken, verifyAdmin, createEvent);
 eventRouter.get('/:id', verifyToken, getEvent);
+eventRouter.post('/', verifyToken, verifyAdmin, createEvent);
 eventRouter.patch('/:id', verifyToken, verifyAdmin, updateEvent);
 eventRouter.delete('/:id', verifyToken, verifyAdmin, deleteEvent);
 
