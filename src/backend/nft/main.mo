@@ -46,7 +46,6 @@ shared(msg) actor class Nft() = Self{
             case(?balance) return #Ok(balance);
         };
     };
-
     public query func ownerOf(tokenId: TokenId) : async ?Principal {
        return _ownerOf(tokenId);
     };
@@ -108,8 +107,8 @@ shared(msg) actor class Nft() = Self{
         return _isApprovedForAll(owner, to);
     };
 
-    public shared(msg) func transfer(tokenId: TokenId, to: Principal): async Types.TxReceipt {
-       _transfer(msg.caller, to, tokenId);
+    public shared(msg) func transfer(from: Principal,tokenId: TokenId, to: Principal): async Types.TxReceipt {
+       _transfer(from, to, tokenId);
        return #Ok(true);
     };
 
@@ -134,10 +133,10 @@ shared(msg) actor class Nft() = Self{
     Iter.iterate(
         tokenIdToOwner.entries(),func ((tokenId: TokenId, owner: Principal), index: Nat) {
           if (owner == caller) {
+
             tokenIds.add(tokenId);
           };
         });
-
     var result = Buffer.Buffer<Types.NftResp>(10);
     for (i in Iter.fromArray(tokenIds.toArray())) {
       var data = _unwrap(tokenIdToMetadata.get(i));
@@ -193,15 +192,19 @@ shared(msg) actor class Nft() = Self{
     };
 
     private func _transfer(from : Principal, to : Principal, tokenId : Nat) : () {
-		assert _exists(tokenId);
-		var owner = _ownerOf(tokenId);
-		
-		_removeApprove(tokenId);
-		
-		_decrementBalance(_unwrap(owner));
+        assert _exists(tokenId);
+        _decrementBalance(from);
 		_incrementBalance(to);
 		tokenIdToOwner.put(tokenId, to);
-	};
+        let tokenMetadata = _unwrap(tokenIdToMetadata.get(tokenId));
+        let new_tokenMetadata : Types.metadata = {
+            name = tokenMetadata.name;
+            url = tokenMetadata.url;
+            description = tokenMetadata.description;
+            owner = to;
+        };
+        tokenIdToMetadata.put(tokenId, new_tokenMetadata);
+    };
 
     private func _exists(tokenId : Nat) : Bool {
 		return Option.isSome(tokenIdToMetadata.get(tokenId));
