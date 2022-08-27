@@ -13,6 +13,10 @@ const adSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  details: {
+    type: String,
+    required: true,
+  }
 });
 
 module.exports = mongoose.model('Ad', adSchema);
