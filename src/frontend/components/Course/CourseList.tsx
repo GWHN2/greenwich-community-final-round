@@ -2,7 +2,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { EditingItemIdState, UserRoleState } from '../../data/globalState';
 import { ShowingModalState } from '../../data/globalState/index';
 import Button from '../common/Button';
-import Course from './Course';
+import { Item } from '../Item';
 
 const CourseList = ({ courses }: any) => {
   const userRole = useRecoilValue(UserRoleState);
@@ -16,7 +16,7 @@ const CourseList = ({ courses }: any) => {
           <Button
             onClick={() => {
               setEditingItem(null);
-              setShowingModal('ManageCourse');
+              setShowingModal('ManageItem');
             }}
           >
             Add
@@ -25,7 +25,7 @@ const CourseList = ({ courses }: any) => {
       </div>
       <div className='grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4'>
         {courses.map((course: any, index: number) => {
-          return <div key={index}>{<Course {...course} />}</div>;
+          return <div key={index}>{<Item {...course} />}</div>;
         })}
       </div>
     </div>

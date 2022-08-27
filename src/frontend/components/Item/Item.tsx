@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
@@ -12,9 +11,8 @@ import {
 import { CourseData } from '../../data/type';
 import { getHeaders } from '../../utils/getHeaders';
 import Button from '../common/Button';
-import CourseDefaultImage from '../../../public/images/course/course.png';
 
-const Course = (props: CourseData) => {
+const Item = (props: CourseData) => {
   const userRole = useRecoilValue(UserRoleState);
   const setShowingModal = useSetRecoilState(ShowingModalState);
   const setEditingItem = useSetRecoilState(EditingItemIdState);
@@ -25,9 +23,10 @@ const Course = (props: CourseData) => {
   const handleDelete = async () => {
     try {
       const headers = getHeaders();
-      const response = await API.delete(`/events/${_id}`, { headers });
+      const response = await API.delete(`${asPath}/${_id}`, { headers });
       if (response.status === 200) {
-        toast.success(' Delete successfully');
+        toast.success('Delete successfully');
+        window.location.reload();
       }
     } catch (error) {
       console.log(error);
@@ -57,7 +56,7 @@ const Course = (props: CourseData) => {
             className='px-8'
             onClick={() => {
               setEditingItem(_id);
-              setShowingModal('ManageCourse');
+              setShowingModal('ManageItem');
             }}
           >
             Edit
@@ -86,4 +85,4 @@ const Course = (props: CourseData) => {
   );
 };
 
-export default Course;
+export default Item;

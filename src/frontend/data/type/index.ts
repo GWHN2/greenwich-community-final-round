@@ -38,8 +38,8 @@ export type EventData = {
   name: string;
   description: string;
   imageUrl: string;
-  code: string;
   tokens: number;
+  code: string;
 };
 
 export type CourseData = {
@@ -48,6 +48,7 @@ export type CourseData = {
   description: string;
   imageUrl: string;
   tokens: number;
+  code: string;
 };
 
 export type ProductData = {
@@ -56,6 +57,7 @@ export type ProductData = {
   description: string;
   imageUrl: string;
   price: number;
+  code: string;
 };
 
 export type NFTData = {

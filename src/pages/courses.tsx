@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useQuery } from 'react-query';
 import RefetchButton from '../frontend/components/common/RefetchButton';
-import { CourseList } from '../frontend/components/Courses';
+import { CourseList } from '../frontend/components/Course';
 import API from '../frontend/data/api';
 import { APP } from '../frontend/enum';
 import { getHeaders } from '../frontend/utils/getHeaders';
