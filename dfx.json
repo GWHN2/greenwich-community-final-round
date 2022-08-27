@@ -15,6 +15,10 @@
     "staking" : {
       "type" : "motoko",
       "main" : "src/backend/staking/main.mo"
+    },
+    "dao" : {
+      "type" : "motoko",
+      "main" : "src/backend/dao/main.mo"
     }
   },
   "defaults": {
