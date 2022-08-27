@@ -70,6 +70,10 @@ module {
         amount: Nat;
         totalProfit: Nat;
     };
+    public type IsStake = {
+        owner : Principal;
+        isStake : Bool;
+    };
 
     public type ApiError = {
         #Unauthorized;

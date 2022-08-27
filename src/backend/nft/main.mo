@@ -133,7 +133,6 @@ shared(msg) actor class Nft() = Self{
     Iter.iterate(
         tokenIdToOwner.entries(),func ((tokenId: TokenId, owner: Principal), index: Nat) {
           if (owner == caller) {
-
             tokenIds.add(tokenId);
           };
         });
