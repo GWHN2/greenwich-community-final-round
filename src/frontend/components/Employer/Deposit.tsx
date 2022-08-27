@@ -7,7 +7,6 @@ import Button from "../common/Button";
 import HookForm from "../common/HookForm";
 import Spinner from "../common/Spinner";
 import Titles from "../common/Titles";
-import PaypalButton from "../PaypalButton";
 
 const Deposit = () => {
   const textInputs = [
@@ -77,6 +76,8 @@ const Deposit = () => {
           setFormValues(values as any);
         }}
       />
+
+      {/* <PaypalButton amount={formValues.amount} onSuccess={handleDeposit} /> */}
 
       <div className="flex items-center justify-center">
         <Button onClick={handleDeposit} loading={loading}>

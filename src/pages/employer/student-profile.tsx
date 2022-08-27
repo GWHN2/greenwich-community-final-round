@@ -3,43 +3,39 @@ import avatar from "../../public/images/avatar.png";
 import SearchInput from "../../frontend/components/common/SearchInput";
 import { Profile } from "../../frontend/components/Profile";
 import { APP } from "../../frontend/enum";
+import { ProfileProps } from "../../frontend/components/Profile/Profile";
 
 function StudentProfile() {
-  const profiles = [
+  const profiles: ProfileProps[] = [
     {
       image: avatar,
       username: "John Doe",
       dateOfBirth: "01/01/2000",
-      StudentID: "123456789",
-      numOfToken: 0,
+      studentID: "123456789",
     },
     {
       image: avatar,
       username: "John Doe",
       dateOfBirth: "01/01/2000",
-      StudentID: "3423432423",
-      numOfToken: 20,
+      studentID: "3423432423",
     },
     {
       image: avatar,
       username: "John Doe",
       dateOfBirth: "01/01/2000",
-      StudentID: "3423432423",
-      numOfToken: 20,
+      studentID: "3423432423",
     },
     {
       image: avatar,
       username: "John Doe",
       dateOfBirth: "01/01/2000",
-      StudentID: "3423432423",
-      numOfToken: 20,
+      studentID: "3423432423",
     },
     {
       image: avatar,
       username: "John Doe",
       dateOfBirth: "01/01/2000",
-      StudentID: "3423432423",
-      numOfToken: 20,
+      studentID: "3423432423",
     },
   ];
 
@@ -49,14 +45,17 @@ function StudentProfile() {
         <title>{APP.APP_NAME} | Employer | View Student profile</title>
       </Head>
       <main className="container flex flex-col items-center justify-center mt-32">
-        <SearchInput
+        {/* <SearchInput
           layoutClassName="mb-60 w-72"
           placeholder="Search by student code"
-        />
-
-        <div className="flex flex-row space-x-4">
-          {profiles.map((profile, i) => {
-            return <div key={i}>{/* <Profile {...profile} /> */}</div>;
+        /> */}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {profiles.map((profile: ProfileProps, i) => {
+            return (
+              <div key={i} className="mb-24">
+                <Profile {...profile} />
+              </div>
+            );
           })}
         </div>
       </main>

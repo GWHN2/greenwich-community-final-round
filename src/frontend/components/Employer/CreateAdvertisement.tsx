@@ -23,7 +23,6 @@ const CreateAdvertisement = () => {
         sessiondata?.principalId as string,
         300
       );
-      console.log(feeResult);
     } catch (error) {
       console.log(error);
     }
