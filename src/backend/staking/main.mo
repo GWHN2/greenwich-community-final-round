@@ -25,6 +25,7 @@ shared(msg) actor class Staking(dip20: Principal) = Self {
     private var addressToStaking = HashMap.HashMap<Principal, HashMap.HashMap<Nat, Types.StakingInfo>>(1, Principal.equal, Principal.hash);
     private var isStaker = HashMap.HashMap<Principal, Bool>(1, Principal.equal, Principal.hash);
     private stable var amount_stable : Nat = 500;
+    
     public shared(msg) func Stake(caller: Principal, amount: Nat): async Types.StakeResult {
         if(amount <= amount_stable) {
             return #Err(#NotApproveForStakingOrNotEnoughtToken);

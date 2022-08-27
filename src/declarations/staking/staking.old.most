@@ -11,7 +11,6 @@ type StakingPackage =
   {fee : Float; id : Nat; isOff : Bool; lockTime : Time; minStaking : Nat};
 type Time = Int;
 actor {
-  stable var amount_stable : Nat;
   stable var idCounter : Nat;
   stable var stakingInfo : [(Principal, [(Nat, StakingInfo)])];
   stable var stakings : [(Nat, StakingPackage)]

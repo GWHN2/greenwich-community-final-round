@@ -1,48 +1,10 @@
-type UnStakeResult = 
- variant {
-   Err: ApiError;
-   Ok: bool;
- };
-type Time = int;
-type StakingPackageCreate = 
- record {
-   fee: float64;
-   lockTime: Time;
-   minStaking: nat;
- };
-type StakingPackage = 
- record {
-   fee: float64;
-   id: nat;
-   isOff: bool;
-   lockTime: Time;
-   minStaking: nat;
- };
-type StakingInfo = 
- record {
-   amount: nat;
-   owner: principal;
-   startTime: Time;
-   timePoint: Time;
-   totalProfit: nat;
- };
 type Staking = 
  service {
-   AddPackage: (StakingPackageCreate) -> (nat);
-   DeleteStakingPackage: (nat) -> (DeleteStakingPackage);
-   GetMyStaking: (principal) -> (vec StakingInfo) query;
-   GetStakingPackage: () -> (vec StakingPackage) query;
-   Stake: (principal, nat, nat) -> (StakeResult);
-   Unstake: (principal, nat) -> (UnStakeResult);
+   Stake: (principal, nat) -> (StakeResult);
    getCanisterPrincipal: () -> (principal) query;
    isStake: (principal) -> (bool) query;
  };
 type StakeResult = 
- variant {
-   Err: ApiError;
-   Ok: bool;
- };
-type DeleteStakingPackage = 
  variant {
    Err: ApiError;
    Ok: bool;
