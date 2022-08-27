@@ -9,16 +9,16 @@ export interface ProfileProps {
   image: any;
   username: string;
   dateOfBirth: string;
-  StudentID: string;
-  numOfToken: number;
+  studentID: string;
+  tokens: number;
 }
 
 const Profile = ({
   image,
   username,
   dateOfBirth,
-  StudentID,
-  numOfToken,
+  studentID = 'N/A',
+  tokens,
 }: ProfileProps) => {
   const router = useRouter();
   const userRole = useRecoilValue(UserRoleState);
@@ -41,11 +41,11 @@ const Profile = ({
         </div>
         <div className="flex flex-col">
           <Label text={dateOfBirth} label="Date of Birth" />
-          <Label text={StudentID} label="Student ID" />
+          <Label text={studentID} label="Student ID" />
           {userRole === "Student" && (
             <div>
               <Label
-                text={numOfToken.toString()}
+                text={tokens.toString()}
                 label="Number of Token"
                 className="font-semibold gradient-text"
               />
@@ -61,7 +61,7 @@ const Profile = ({
           {userRole === "Admin" && (
             <div>
               <Label
-                text={numOfToken.toString()}
+                text={tokens.toString()}
                 label="Number of Token"
                 className="font-semibold gradient-text"
               />
