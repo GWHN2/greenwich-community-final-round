@@ -17,6 +17,10 @@ const courseSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  code: {
+    type: String,
+    required: true,
+  }
 });
 
 module.exports = mongoose.model('Course', courseSchema);

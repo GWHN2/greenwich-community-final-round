@@ -31,10 +31,6 @@ const userSchema = new mongoose.Schema({
       ref: 'Role',
     },
   ],
-  code: {
-    type: String,
-    required: false,
-  },
   tokens: {
     type: Number,
     required: true,

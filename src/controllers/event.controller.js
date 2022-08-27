@@ -8,7 +8,16 @@ const getAllEvents = asyncWrapper(async (req, res) => {
 });
 
 const createEvent = asyncWrapper(async (req, res) => {
-  const event = await eventModel.create(req.body);
+  let event = await eventModel.findOne({ code: req.body.code });
+
+  if (event) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'Event already exists' });
+  }
+
+  event = await eventModel.create(req.body);
+
   res.status(200).json({
     status: 200,
     data: event,

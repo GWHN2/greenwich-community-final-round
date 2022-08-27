@@ -8,7 +8,15 @@ const getAllCourses = asyncWrapper(async (req, res) => {
 });
 
 const createCourse = asyncWrapper(async (req, res) => {
-  const course = await courseModel.create(req.body);
+  let course = await courseModel.findOne({ code: req.body.code });
+
+  if (course) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'Course already exists' });
+  }
+
+  course = await courseModel.create(req.body);
   res.status(200).json({
     status: 200,
     data: course,
