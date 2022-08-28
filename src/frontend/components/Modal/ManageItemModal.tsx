@@ -91,8 +91,9 @@ const ManageItemModal = () => {
       if (response.status === 200) {
         toast.success(asPath + ' Edit successfully');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      toast.error('Login Failed: ' + error?.response?.data?.msg);
     }
   };
 
@@ -109,8 +110,9 @@ const ManageItemModal = () => {
       if (response.status === 200) {
         toast.success(asPath + ' Added successfully');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      toast.error('Login Failed: ' + error?.response?.data?.msg);
     }
   };
 

@@ -1,31 +1,31 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { toast } from "react-toastify";
-import { useSetRecoilState } from "recoil";
-import API from "../../data/api";
-import { UserDataState, UserRoleState } from "../../data/globalState";
-import { ACCESS_TOKEN } from "../../data/localStorage";
-import Button from "../common/Button";
-import HookForm from "../common/HookForm";
-import Titles from "../common/Titles";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { useSetRecoilState } from 'recoil';
+import API from '../../data/api';
+import { UserDataState, UserRoleState } from '../../data/globalState';
+import { ACCESS_TOKEN } from '../../data/localStorage';
+import Button from '../common/Button';
+import HookForm from '../common/HookForm';
+import Titles from '../common/Titles';
 
 const LoginFrom = () => {
   const router = useRouter();
   const defaultValues = {
-    username: "",
-    password: "",
+    username: '',
+    password: '',
   };
 
   const textInputs = [
     {
-      placeholder: "Enter username",
-      name: "username",
+      placeholder: 'Enter username',
+      name: 'username',
     },
     {
-      placeholder: "Enter password",
-      name: "password",
-      type: "password",
+      placeholder: 'Enter password',
+      name: 'password',
+      type: 'password',
     },
   ];
   const [formValues, setFormValues] = useState(defaultValues);
@@ -36,26 +36,27 @@ const LoginFrom = () => {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const response = await API.post("/auth/login", {
+      const response = await API.post('/auth/login', {
         username: formValues.username,
         password: formValues.password,
       });
       const _userData = response.data?.data;
       setUserData(_userData);
       setUserRole(_userData?.roles[0]?.name);
-      toast.success("Login Successful as " + _userData.username);
+      toast.success('Login Successful as ' + _userData.username);
       localStorage.setItem(ACCESS_TOKEN, _userData.access_token);
-      router.push("/");
-    } catch (error) {
+      router.push('/');
+    } catch (error: any) {
       console.log(error);
+      toast.error('Login Failed: ' + error?.response?.data?.msg);
     }
     setLoading(false);
   };
 
   return (
-    <div className="w-full p-6 my-10 bg-white rounded-lg lg:w-1/2 drop-shadow-xl">
-      <Titles title="Login" className="text-center" />
-      <div className="flex flex-col items-center justify-center space-y-5">
+    <div className='w-full p-6 my-10 bg-white rounded-lg lg:w-1/2 drop-shadow-xl'>
+      <Titles title='Login' className='text-center' />
+      <div className='flex flex-col items-center justify-center space-y-5'>
         <HookForm
           textInputs={textInputs}
           defaultValues={defaultValues}
@@ -63,15 +64,15 @@ const LoginFrom = () => {
             setFormValues(values as any);
           }}
         />
-        <div className="flex flex-row items-center justify-between w-full">
-          <Link href="/forgot-password">
+        <div className='flex flex-row items-center justify-between w-full'>
+          <Link href='/forgot-password'>
             <a>Forgot password?</a>
           </Link>
-          <Link href="/register">
+          <Link href='/register'>
             <a>Register</a>
           </Link>
         </div>
-        <div className="flex justify-center">
+        <div className='flex justify-center'>
           <Button onClick={handleLogin} loading={loading}>
             Login
           </Button>
