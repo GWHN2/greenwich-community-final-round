@@ -1,4 +1,5 @@
 import Array "mo:base/Array";
+import Buffer "mo:base/Buffer";
 import Debug "mo:base/Debug";
 import Error "mo:base/Error";
 import Hash "mo:base/Hash";
@@ -11,8 +12,8 @@ import Option "mo:base/Option";
 import P "mo:base/Prelude";
 import Principal "mo:base/Principal";
 import Time "mo:base/Time";
+
 import Types "types";
-import Buffer "mo:base/Buffer";
 
 
 shared(msg) actor class DAO(staking : Principal) = Self{
@@ -25,11 +26,13 @@ shared(msg) actor class DAO(staking : Principal) = Self{
     stable var nextEventPendingId : Nat = 0;
     private stable var eventToVotesStore:[(Nat,[(Principal,Types.Vote)])] = [];
     private stable var eventPendingStore: [(Nat, Types.EventPending)] = [];
+    private stable var eventPendingStoreCreate: [(Nat, Types.EventPendingCreate)] = [];
     private var idToEventMetadata= HashMap.HashMap<Nat, HashMap.HashMap<Principal, Types.eventmetadata>>(1, Nat.equal, Hash.hash);
     private var idToEventPending: HashMap.HashMap<Nat, Types.EventPending> = HashMap.fromIter(eventPendingStore.vals(), 10, Nat.equal, Hash.hash);
     private var stakeProvider : Types.IStaking = actor(Principal.toText(staking)) : Types.IStaking;
     private var eventPendingToVotes = HashMap.HashMap<Nat, HashMap.HashMap<Principal, Types.Vote>>(1, Nat.equal, Hash.hash);
-  
+      private var idToEventPendingCreate: HashMap.HashMap<Nat, Types.EventPendingCreate> = HashMap.fromIter(eventPendingStoreCreate.vals(), 10, Nat.equal, Hash.hash);
+
 
     public shared(msg) func CreateEvent(event : Types.Event) : async Types.CreateEventResult {
         let id = nextEventId;
@@ -37,31 +40,46 @@ shared(msg) actor class DAO(staking : Principal) = Self{
         
         return #Ok(true);
     };
-    public shared(msg) func CreateEventPending(eventPending : Types.EventPending) : async Types.EventPendingResult{
-        let id = nextEventPendingId;
+    public shared(msg) func CreateEventPending(caller: Principal,eventPending : Types.EventPendingCreate) : async Types.EventPendingResult{
         nextEventPendingId += 1;
-        idToEventPending.put(id, eventPending);
+        let id = nextEventPendingId;
+        idToEventPendingCreate.put(id, eventPending);
         let metadata_temp = {
             eventPendingId = id;
             eventVote = #Up;
         };
+        idToEventPending.put(id, {
+            id = id;
+            title = eventPending.title;
+    description = eventPending.description;
+        eventmaker = caller;
+        voteUp = 0;
+        voteDown = 0;
+        timePending = eventPending.timePending;
+        });
+        let tmp = HashMap.HashMap<Principal, Types.eventmetadata>(1, Principal.equal, Principal.hash);
+        tmp.put(caller, metadata_temp);
+        idToEventMetadata.put(id, tmp);
         return #Ok(true);
     };
     public shared(msg) func GetAllEventPending() : async[(EventId, Types.EventPending)]{
         return Iter.toArray<(EventId, Types.EventPending)>(idToEventPending.entries());
     };
-    public shared(msg) func VoteCreateEvent(caller : Principal, data: Types.eventmetadata) : async Types.EventPendingResult{
+    public shared(msg) func VoteCreateEvent(caller : Principal,eventPendingId:Nat,vote:Text) : async Types.EventPendingResult{
+        if (Principal.isAnonymous(caller)) {
+			return #Err(#Unauthorized);
+		};
         let check = await stakeProvider.isStake(caller);
         if(not check){
             return #Err(#NotValidator);
         };
-        switch(idToEventPending.get(data.eventPendingId)){
+        switch(idToEventPending.get(eventPendingId)){
             
             case (?eventPendingData){
-                switch(data.eventVote){
-                    case(#Up){
+                switch(vote){
+                    case("Up"){
                         let newEventPending={
-                            id = eventPendingData.id;
+                            id = eventPendingId;
                             title = eventPendingData.title;
                             description = eventPendingData.description;
                             eventmaker = caller;
@@ -69,11 +87,11 @@ shared(msg) actor class DAO(staking : Principal) = Self{
                             voteDown = eventPendingData.voteDown;
                             timePending = eventPendingData.timePending;
                         };
-                        idToEventPending.put(data.eventPendingId, newEventPending);
+                        idToEventPending.put(eventPendingId, newEventPending);
                     };
-                    case(#Down){
+                    case("Down"){
                         let newEventPending={
-                            id = eventPendingData.id;
+                            id = eventPendingId;
                             title = eventPendingData.title;
                             description = eventPendingData.description;
                             eventmaker = caller;
@@ -81,15 +99,13 @@ shared(msg) actor class DAO(staking : Principal) = Self{
                             voteDown = eventPendingData.voteDown + 1;
                             timePending = eventPendingData.timePending;
                         };
-                        idToEventPending.put(data.eventPendingId, newEventPending);
+                        idToEventPending.put(eventPendingId, newEventPending);
                     };
                 };
                 
             };
             case null{
-                var tmp = HashMap.HashMap<Principal, Types.eventmetadata>(1, Principal.equal, Principal.hash);
-                tmp.put(caller, data);
-                idToEventMetadata.put(data.eventPendingId, tmp);
+                return #Err(#Other);
             };
             
         };
@@ -172,7 +188,6 @@ shared(msg) actor class DAO(staking : Principal) = Self{
 	system func postupgrade() {
 		eventStore := [];
 		eventPendingStore := [];
-
 	};
 
 };

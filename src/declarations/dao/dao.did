@@ -1,0 +1,70 @@
+type Time = int;
+type EventPendingResult = 
+ variant {
+   Err: EventPendingError;
+   Ok: bool;
+ };
+type EventPendingError = 
+ variant {
+   AlreadyVoted;
+   InvalidAddress;
+   InvalidTokenId;
+   MarketNotEnoughtToken;
+   NotManager;
+   NotSeller;
+   NotValidator;
+   Other;
+   TimeVoteIsExpired;
+   Unauthorized;
+ };
+type EventPendingCreate = 
+ record {
+   description: text;
+   eventmaker: principal;
+   timePending: Time;
+   title: text;
+   voteDown: nat;
+   voteUp: nat;
+ };
+type EventPending = 
+ record {
+   description: text;
+   eventmaker: principal;
+   id: nat;
+   timePending: Time;
+   title: text;
+   voteDown: nat;
+   voteUp: nat;
+ };
+type EventId = nat;
+type Event = 
+ record {
+   description: text;
+   eventmaker: principal;
+   id: nat;
+   title: text;
+ };
+type DAO = 
+ service {
+   ApproveEventPending: (nat) -> (ApproveEventPendingResult);
+   CreateEvent: (Event) -> (CreateEventResult);
+   CreateEventPending: (principal, EventPendingCreate) ->
+    (EventPendingResult);
+   GetAllEventPending: () -> (vec record {
+                                    EventId;
+                                    EventPending;
+                                  });
+   IsVotedEvent: (principal, nat) -> (bool) query;
+   VoteCreateEvent: (principal, nat, text) -> (EventPendingResult);
+ };
+type CreateEventResult = 
+ variant {
+   Err: EventPendingError;
+   Ok: bool;
+ };
+type ApproveEventPendingResult = 
+ variant {
+   Err: EventPendingError;
+   Ok: bool;
+ };
+service : (principal) -> DAO

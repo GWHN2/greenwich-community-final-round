@@ -20,7 +20,7 @@ const TransferNFTModal = () => {
 
   const handleTransfer = async () => {
     if (!toPrincipalId) {
-      toast.error("Please select a file to upload");
+      toast.error("Please enter a valid principal id");
       return;
     }
     if (!transferringId) {

@@ -35,7 +35,7 @@ const Item = (props: CourseData) => {
 
   return (
     <div className="flex flex-col items-center justify-center p-3 transition duration-300 bg-white rounded-lg shadow-xl cursor-pointer hover:scale-105">
-      <div className="h-40  w-72 lg:w-80">
+      <div className="h-40 w-72 lg:w-80">
         <img
           src={imageUrl}
           alt={name}

@@ -1,0 +1,35 @@
+// Version: 1.0.0
+type Event =
+  {description : Text; eventmaker : Principal; id : Nat; title : Text};
+type EventPending =
+  {
+    description : Text;
+    eventmaker : Principal;
+    id : Nat;
+    timePending : Time;
+    title : Text;
+    voteDown : Nat;
+    voteUp : Nat
+  };
+type EventPendingCreate =
+  {
+    description : Text;
+    eventmaker : Principal;
+    timePending : Time;
+    title : Text;
+    voteDown : Nat;
+    voteUp : Nat
+  };
+type Time = Int;
+type Vote = {#Down; #Up};
+type eventmetadata = {eventPendingId : Nat; eventVote : Vote};
+actor {
+  stable var eventIdCount : Nat;
+  stable var eventMetadataStore : [(Nat, eventmetadata)];
+  stable var eventPendingStore : [(Nat, EventPending)];
+  stable var eventPendingStoreCreate : [(Nat, EventPendingCreate)];
+  stable var eventStore : [(Nat, Event)];
+  stable var eventToVotesStore : [(Nat, [(Principal, Vote)])];
+  stable var nextEventId : Nat;
+  stable var nextEventPendingId : Nat
+};

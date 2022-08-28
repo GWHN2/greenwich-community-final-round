@@ -14,6 +14,10 @@ import {
   createActor as createStakingActor,
   canisterId as stakingCanisterId,
 } from "../../declarations/staking";
+import {
+  createActor as createDaoActor,
+  canisterId as daoCanisterId,
+} from "../../declarations/dao";
 
 export const host = process.env.NEXT_PUBLIC_IC_HOST;
 export const canisterId = {
@@ -21,6 +25,7 @@ export const canisterId = {
   nft: nftCanisterId,
   marketplace: marketplaceCanisterId,
   staking: stakingCanisterId,
+  dao: daoCanisterId,
 };
 
 export const makeActor = (canisterId: any, createActor: any) => {
@@ -41,6 +46,11 @@ export function makeNftActor() {
 export function makeMarketplaceActor() {
   return makeActor(marketplaceCanisterId, createMarketplaceActor);
 }
+
 export function makeStakingActor() {
   return makeActor(stakingCanisterId, createStakingActor);
+}
+
+export function makeDaoActor() {
+  return makeActor(daoCanisterId, createDaoActor);
 }

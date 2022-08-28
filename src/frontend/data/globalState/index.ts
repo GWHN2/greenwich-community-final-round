@@ -54,3 +54,17 @@ export const ListingStatusNFTState = atom<string[]>({
   default: [],
   effects_UNSTABLE: [persistAtom],
 });
+
+export const IsStakeholderState = atom<boolean>({
+  key: "IsStakeholderState",
+  default: false,
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const VotedStakeHolderState = atom<
+  { principalId: string; eventPendingId: number }[]
+>({
+  key: "VotedStakeHolderState",
+  default: [],
+  effects_UNSTABLE: [persistAtom],
+});

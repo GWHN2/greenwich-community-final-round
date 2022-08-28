@@ -20,7 +20,8 @@
     "sync:nft": "DFX_NETWORK=local && rsync -avr .dfx/$(echo ${DFX_NETWORK:-'**'})/canisters/nft --exclude='idl/' --exclude='*.wasm' --delete src/declarations",
     "sync:token": "DFX_NETWORK=local && rsync -avr .dfx/$(echo ${DFX_NETWORK:-'**'})/canisters/token --exclude='idl/' --exclude='*.wasm' --delete src/declarations",
     "sync:marketplace": "DFX_NETWORK=local && rsync -avr .dfx/$(echo ${DFX_NETWORK:-'**'})/canisters/marketplace --exclude='idl/' --exclude='*.wasm' --delete src/declarations",
-    "sync:staking": "DFX_NETWORK=local && rsync -avr .dfx/$(echo ${DFX_NETWORK:-'**'})/canisters/staking --exclude='idl/' --exclude='*.wasm' --delete src/declarations"
+    "sync:staking": "DFX_NETWORK=local && rsync -avr .dfx/$(echo ${DFX_NETWORK:-'**'})/canisters/staking --exclude='idl/' --exclude='*.wasm' --delete src/declarations",
+    "sync:dao": "DFX_NETWORK=local && rsync -avr .dfx/$(echo ${DFX_NETWORK:-'**'})/canisters/dao --exclude='idl/' --exclude='*.wasm' --delete src/declarations"
   },
   "dependencies": {
     "@dfinity/agent": "^0.12.1",

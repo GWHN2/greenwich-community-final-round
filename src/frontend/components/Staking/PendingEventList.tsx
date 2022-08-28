@@ -1,15 +1,17 @@
+import {
+  ChevronDoubleDownIcon,
+  ChevronDoubleUpIcon,
+} from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  ListingPriceState,
+  IsStakeholderState,
   SessionDataState,
   ShowingModalState,
-  TransferringIdState,
+  VotedStakeHolderState as VotedStakeholderState,
 } from "../../data/globalState";
-import { NFTData } from "../../data/type";
-import { listNft } from "../../service/marketplace-service";
-import { getMyNfts } from "../../service/nft-service";
+import { getAllEventPending, voteCreateEvent } from "../../service/dao-service";
 import { shortenAddress } from "../../utils/stringsFunction";
 import Button from "../common/Button";
 import Spinner from "../common/Spinner";
@@ -23,28 +25,28 @@ export interface ProfileProps {
   numOfToken: number;
 }
 
-const PendingEventList = ({ isForSale = false }: { isForSale?: boolean }) => {
+const PendingEventList = () => {
   const sectionData = useRecoilValue(SessionDataState);
-  const [myNfts, setMyNfts] = useState<NFTData[]>([]);
+  const [pendingEvents, setPendingEvents] = useState<any[]>([]);
   const setShowingModal = useSetRecoilState(ShowingModalState);
-  const setTransferringId = useSetRecoilState(TransferringIdState);
-  const listingPrice = useRecoilValue(ListingPriceState);
-  const resetListingPrice = useResetRecoilState(ListingPriceState);
-  const [loading, setLoading] = useState(false);
   const [loadingList, setLoadingList] = useState(false);
+  const isStakeholder = useRecoilValue(IsStakeholderState);
+  const [isVoting, setIsVoting] = useState(false);
+  const [votedStakeholder, setVotedStakeholder] = useRecoilState(
+    VotedStakeholderState
+  );
 
   useEffect(() => {
     (async () => {
       setLoadingList(true);
       try {
-        const nfts = await getMyNfts();
-        const filteredNfts = nfts.filter((nft: any) => {
-          return (
-            nft[1].owner?.toString() === (sectionData?.principalId as string)
-          );
-        });
-
-        setMyNfts(filteredNfts.map((nft: any) => ({ ...nft[1], id: nft[0] })));
+        const _pendingEvents = await getAllEventPending();
+        const mappedPendingEvents = _pendingEvents.map((event: any) => ({
+          ...event[1],
+          eventPendingId: event[0],
+          eventmaker: event[1].eventmaker.toString(),
+        }));
+        setPendingEvents(mappedPendingEvents);
       } catch (error) {
         console.log(error);
       }
@@ -52,54 +54,90 @@ const PendingEventList = ({ isForSale = false }: { isForSale?: boolean }) => {
     })();
   }, []);
 
-  const handleSales = async (nft: NFTData) => {
-    setLoading(true);
+  const handleVote = async (eventPendingId: number, vote: "Up" | "Down") => {
+    setIsVoting(true);
     try {
-      const listNFTresponse = await listNft(listingPrice as number, nft);
-      console.log(listNFTresponse);
-      if (listNFTresponse) {
-        toast.success("NFT listed successfully");
-        resetListingPrice();
+      const voteResponse = await voteCreateEvent(
+        sectionData?.principalId as string,
+        eventPendingId,
+        vote
+      );
+
+      if (voteResponse.Ok) {
+        toast.success("You have voted");
       }
     } catch (error) {
       console.log(error);
     }
-    setLoading(false);
+    setIsVoting(false);
   };
 
   if (loadingList) {
     return <Spinner />;
   }
+  if (!isStakeholder) {
+    return null;
+  }
 
   return (
-    <div className="pb-10">
+    <div className="flex flex-col items-center justify-center pb-10">
+      <Button onClick={() => setShowingModal("CreatePendingEvent")}>
+        Create pending Event
+      </Button>
+
       <Titles title="Pending Event List" className="text-center" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {myNfts &&
-          myNfts.length > 0 &&
-          myNfts.map((nft, index) => (
-            <div
-              className="flex flex-col items-center justify-around p-4 rounded-lg shadow-lg cursor-pointer dropdown-container"
-              key={index}
-            >
-              <span className="">Name: {nft.name}</span>
-              <span className="">Description: {nft.description}</span>
-              <span className="">
-                Owner: {shortenAddress(nft.owner.toString())}
-              </span>
-
-              <div className="">
-                <Button
-                  onClick={() => {
-                    setTransferringId(nft.id);
-                    setShowingModal("TransferNFT");
-                  }}
-                >
-                  Vote
-                </Button>
+        {pendingEvents &&
+          pendingEvents.length > 0 &&
+          pendingEvents.map((event, index) => {
+            const indexOf = votedStakeholder.findIndex((voted) => {
+              return (
+                voted.eventPendingId === event.eventPendingId &&
+                voted.principalId === sectionData?.principalId
+              );
+            });
+            const isVoted = 1;
+            return (
+              <div
+                className="flex flex-col items-center justify-around p-4 rounded-lg shadow-lg dropdown-container"
+                key={index}
+              >
+                <span className="text-lg font-semibold">
+                  Name: {event.title}
+                </span>
+                <span className="">Description: {event.description}</span>
+                <span>Maker: {shortenAddress(event.eventmaker)}</span>
+                <div className="flex flex-row items-center justify-around w-full">
+                  <span>Approved: {event.voteUp.toString()}</span>
+                  <span>Rejected: {event.voteDown.toString()}</span>
+                </div>
+                <div className="flex flex-row items-center justify-around w-full">
+                  <Button
+                    disabled={isVoting || isVoted}
+                    onClick={async () => {
+                      await handleVote(event.eventPendingId, "Up");
+                    }}
+                  >
+                    <ChevronDoubleUpIcon className="w-5" />
+                  </Button>
+                  <Button
+                    disabled={isVoting || isVoted}
+                    onClick={async () => {
+                      await handleVote(event.eventPendingId, "Down");
+                    }}
+                  >
+                    <ChevronDoubleDownIcon className="w-5" />
+                  </Button>
+                </div>
+                <span>
+                  Vote end at{" "}
+                  {new Date(
+                    Date.now() + +event.timePending.toString()
+                  ).toLocaleString()}
+                </span>
               </div>
-            </div>
-          ))}
+            );
+          })}
       </div>
     </div>
   );

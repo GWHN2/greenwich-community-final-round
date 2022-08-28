@@ -1,3 +1,4 @@
+import CreatePendingEventModal from "./Modal/CreatePendingEventTModal";
 import ListingNFTModal from "./Modal/ListingNFTModal";
 import ManageItemModal from "./Modal/ManageItemModal";
 import MintNFTModal from "./Modal/MintNFTModal";
@@ -10,6 +11,7 @@ const ModalContainer = () => {
       <ManageItemModal />
       <TransferNFTModal />
       <ListingNFTModal />
+      <CreatePendingEventModal />
     </>
   );
 };

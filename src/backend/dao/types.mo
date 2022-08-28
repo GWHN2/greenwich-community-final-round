@@ -9,7 +9,6 @@ public type Vote = {
     #Up;
     #Down;
 };
-public type VoteArgs = { vote : Vote; proposal_id : Nat };
 
 public type Result<T, E> = {
         #Ok: T;
@@ -32,10 +31,18 @@ public type EventPendingError = {
 };
 
 public type EventPending = {
-        id: Nat;
+        id:Nat;
         title:Text;
         description:Text;
         eventmaker: Principal;
+        voteUp: Nat;
+        voteDown: Nat;
+        timePending: Time.Time;
+};
+public type EventPendingCreate = {
+        title:Text;
+        description:Text;
+        eventmaker: PrinØipal;
         voteUp: Nat;
         voteDown: Nat;
         timePending: Time.Time;

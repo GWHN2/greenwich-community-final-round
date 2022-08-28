@@ -1,8 +1,8 @@
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useRecoilValue } from "recoil";
-import { SessionDataState } from "../../data/globalState";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { IsStakeholderState, SessionDataState } from "../../data/globalState";
 import { isStake, stake } from "../../service/staking-service";
 import { chargeFee } from "../../service/token-service";
 import Spinner from "../common/Spinner";
@@ -12,7 +12,7 @@ const Stake = () => {
   const sectionData = useRecoilValue(SessionDataState);
   const [loading, setLoading] = useState(false);
   const [amount, setAmount] = useState("");
-  const [isStaking, setIsStaking] = useState(false);
+  const [isStaking, setIsStaking] = useRecoilState(IsStakeholderState);
 
   const handleStake = async () => {
     if (!amount) {
@@ -51,7 +51,7 @@ const Stake = () => {
         console.log(error);
       }
     })();
-  }, []);
+  }, [sectionData?.principalId]);
 
   return (
     <div className="p-4 space-y-4 rounded-lg shadow-xl">
