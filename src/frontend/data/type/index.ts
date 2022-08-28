@@ -1,7 +1,7 @@
-import { HttpAgent } from "@dfinity/agent";
-import { Principal } from "@dfinity/principal";
+import { HttpAgent } from '@dfinity/agent';
+import { Principal } from '@dfinity/principal';
 
-export type UserRole = "Student" | "Admin" | "Employer";
+export type UserRole = 'Student' | 'Admin' | 'Employer';
 
 export type EditingItem = {
   id?: string;
@@ -69,6 +69,14 @@ export type GradeData = {
   grade: number;
   tokens: number;
   studentID: string;
+};
+
+export type AdData = {
+  _id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  details: string;
 };
 
 export type NFTData = {

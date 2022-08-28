@@ -51,6 +51,7 @@
     "recoil-persist": "^4.2.0",
     "sass": "^1.54.0",
     "stream-browserify": "^3.0.0",
+    "swiper": "^8.3.2",
     "util": "^0.12.4",
     "uuid": "^8.3.2",
     "web3.storage": "^4.4.0"
