@@ -4,7 +4,7 @@ import { Actor, HttpAgent } from "@dfinity/agent";
 import { idlFactory } from "./nft.did.js";
 export { idlFactory } from "./nft.did.js";
 // CANISTER_ID is replaced by webpack based on node environment
-export const canisterId = process.env.NEXT_PUBLIC_NFT_CANISTER_ID;
+export const canisterId = "qx4xj-diaaa-aaaal-qbcjq-cai";
 
 /**
  *

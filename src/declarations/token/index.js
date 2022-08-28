@@ -4,7 +4,7 @@ import { Actor, HttpAgent } from "@dfinity/agent";
 import { idlFactory } from "./token.did.js";
 export { idlFactory } from "./token.did.js";
 // CANISTER_ID is replaced by webpack based on node environment
-export const canisterId = process.env.NEXT_PUBLIC_TOKEN_CANISTER_ID;
+export const canisterId = "qq5r5-oqaaa-aaaal-qbcja-cai";
 
 /**
  *

@@ -19,7 +19,7 @@ import {
   canisterId as daoCanisterId,
 } from "../../declarations/dao";
 
-export const host = process.env.NEXT_PUBLIC_IC_HOST;
+export const host = "https://a4gq6-oaaaa-aaaab-qaa4q-cai.raw.ic0.app/";
 export const canisterId = {
   token: tokenCanisterId,
   nft: nftCanisterId,
