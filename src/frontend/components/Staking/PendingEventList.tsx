@@ -64,6 +64,14 @@ const PendingEventList = () => {
       );
 
       if (voteResponse.Ok) {
+        setVotedStakeholder([
+          ...votedStakeholder,
+          {
+            eventPendingId: eventPendingId,
+            principalId: sectionData?.principalId as string,
+          },
+        ]);
+
         toast.success("You have voted");
       }
     } catch (error) {
@@ -96,7 +104,7 @@ const PendingEventList = () => {
                 voted.principalId === sectionData?.principalId
               );
             });
-            const isVoted = 1;
+            const isVoted = indexOf !== -1;
             return (
               <div
                 className="flex flex-col items-center justify-around p-4 rounded-lg shadow-lg dropdown-container"
