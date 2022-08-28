@@ -1,7 +1,7 @@
 import { Principal } from "@dfinity/principal";
 import { makeNftActor } from "./actor-locator";
 
-export type   MintNFTProps = {
+export type MintNFTProps = {
   url: string;
   name: string;
   description: string;
