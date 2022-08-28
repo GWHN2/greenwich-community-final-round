@@ -42,7 +42,7 @@ public type EventPending = {
 public type EventPendingCreate = {
         title:Text;
         description:Text;
-        eventmaker: PrinØipal;
+        eventmaker: Principal;
         voteUp: Nat;
         voteDown: Nat;
         timePending: Time.Time;
